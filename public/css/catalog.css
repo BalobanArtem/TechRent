@@ -1,0 +1,690 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+  color: #e6e6e6;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 40px;
+  padding: 30px;
+  background: rgba(20, 20, 31, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(168, 116, 255, 0.2);
+}
+
+.filter-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-block label {
+  color: #b79cff;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+select {
+  padding: 12px 20px;
+  background: rgba(29, 29, 43, 0.9);
+  border: 1px solid rgba(168, 116, 255, 0.3);
+  color: #e6e6e6;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.3s;
+  min-width: 200px;
+}
+
+select:hover {
+  border-color: #a874ff;
+  background: rgba(29, 29, 43, 1);
+  box-shadow: 0 4px 15px rgba(168, 116, 255, 0.2);
+}
+
+select:focus {
+  border-color: #a874ff;
+  box-shadow: 0 0 0 3px rgba(168, 116, 255, 0.1);
+}
+
+/* Search Input */
+.search-input {
+  padding: 12px 20px;
+  background: rgba(29, 29, 43, 0.9);
+  border: 1px solid rgba(168, 116, 255, 0.3);
+  color: #e6e6e6;
+  border-radius: 10px;
+  outline: none;
+  font-size: 15px;
+  min-width: 250px;
+  transition: all 0.3s;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.search-input:hover {
+  border-color: #a874ff;
+  background: rgba(29, 29, 43, 1);
+  box-shadow: 0 4px 15px rgba(168, 116, 255, 0.2);
+}
+
+.search-input:focus {
+  border-color: #a874ff;
+  box-shadow: 0 0 0 3px rgba(168, 116, 255, 0.1);
+}
+
+.search-input::placeholder {
+  color: #6d6d8e;
+}
+
+/* Reset Button */
+.reset-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s;
+  margin-top: 24px;
+}
+
+.reset-btn:hover {
+  background: linear-gradient(135deg, #ff7b7b 0%, #ff6a62 100%);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+  transform: translateY(-2px);
+}
+
+.reset-btn:active {
+  transform: translateY(0);
+}
+
+/* CATALOG */
+.catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* CARD */
+.card {
+  background: linear-gradient(135deg, rgba(26, 26, 40, 0.9) 0%, rgba(24, 24, 36, 0.9) 100%);
+  border: 1px solid rgba(168, 116, 255, 0.2);
+  border-radius: 20px;
+  padding: 0 0 60px 0;
+  /* Изначально есть место для кнопки */
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(168, 116, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: 0.4s;
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(168, 116, 255, 0.4);
+  border-color: #a874ff;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card-img {
+  width: 100%;
+  height: 280px;
+  background: linear-gradient(135deg, #252535 0%, #1d1d2b 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card-img::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(to top, rgba(26, 26, 40, 0.9), transparent);
+}
+
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.4s;
+}
+
+.card:hover .card-img img {
+  transform: scale(1.1);
+}
+
+/* CARD CONTENT */
+.card-content {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card h3 {
+  margin: 0 0 12px 0;
+  color: #d8caff;
+  font-size: 22px;
+  position: relative;
+  transition: 0.3s;
+}
+
+.card:hover h3 {
+  color: #a874ff;
+}
+
+.card .desc {
+  color: #b5b5c7;
+  font-size: 14px;
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: 15px;
+}
+
+.price-block {
+  margin: 15px 0 0 0;
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  /* Или space-between для максимального расстояния */
+  padding: 0 30px;
+  /* Добавили отступы по бокам */
+}
+
+.price-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.price-label {
+  font-size: 12px;
+  color: #b79cff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.price-value {
+  color: #8bfaff;
+  font-size: 20px;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(139, 250, 255, 0.3);
+}
+
+/* BUTTONS */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn span {
+  position: relative;
+  z-index: 1;
+}
+
+.btn.rent {
+  background: linear-gradient(135deg, #7d51ff 0%, #6938e8 100%);
+  color: white;
+  box-shadow: 0 5px 15px rgba(125, 81, 255, 0.3);
+}
+
+.btn.rent:hover {
+  box-shadow: 0 8px 25px rgba(125, 81, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn.buy {
+  background: linear-gradient(135deg, #2cced1 0%, #1bb7bd 100%);
+  color: #000;
+  box-shadow: 0 5px 15px rgba(44, 206, 209, 0.3);
+}
+
+.btn.buy:hover {
+  box-shadow: 0 8px 25px rgba(44, 206, 209, 0.5);
+  transform: translateY(-2px);
+}
+
+/* DETAILS BUTTON */
+.details-btn {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  /* Уже на месте */
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #a874ff 0%, #7f4ce6 100%);
+  border: 1px solid rgba(168, 116, 255, 0.5);
+  border-radius: 25px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(168, 116, 255, 0.3);
+  opacity: 0;
+  /* Просто скрыта */
+  pointer-events: none;
+  /* Не мешает кликам */
+  z-index: 10;
+}
+
+.card:hover .details-btn {
+  opacity: 1;
+  pointer-events: auto;
+  /* Становится кликабельной */
+}
+
+.details-btn:hover {
+  transform: translateX(-50%) translateY(-3px);
+  box-shadow: 0 8px 25px rgba(168, 116, 255, 0.5);
+  background: linear-gradient(135deg, #b886ff 0%, #8f5ff0 100%);
+}
+
+.details-btn svg {
+  transition: transform 0.3s;
+}
+
+.details-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 25px;
+  background: rgba(21, 21, 33, 0.95);
+  border-top: 1px solid rgba(168, 116, 255, 0.2);
+  color: #8181a0;
+  margin-top: auto;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .header {
+    padding: 15px 30px;
+  }
+
+  .filters {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .catalog {
+    grid-template-columns: 1fr;
+    padding: 30px 20px;
+  }
+
+  .card-img {
+    height: 220px;
+  }
+}
+
+/* // ============================================================
+// 3. CSS ДЛЯ МОДАЛЬНЫХ ОКОН (добавь в catalog.css)
+// ============================================================ */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  margin: 3% auto;
+  padding: 0;
+  border: 2px solid rgba(168, 116, 255, 0.3);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideDown 0.3s;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-small {
+  max-width: 500px;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-close {
+  color: #a874ff;
+  float: right;
+  font-size: 35px;
+  font-weight: bold;
+  padding: 15px 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-close:hover {
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+.details-container {
+  padding: 30px;
+}
+
+.details-header {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.details-image {
+  flex: 0 0 400px;
+  height: 300px;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #0a0a0f;
+}
+
+.details-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.details-info {
+  flex: 1;
+}
+
+.details-info h2 {
+  color: #a874ff;
+  margin-bottom: 15px;
+  font-size: 28px;
+}
+
+.details-info p {
+  color: #b5b5c7;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.details-price {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.price-tag {
+  padding: 15px 25px;
+  background: rgba(168, 116, 255, 0.1);
+  border: 1px solid rgba(168, 116, 255, 0.3);
+  border-radius: 12px;
+}
+
+.price-tag .label {
+  color: #b79cff;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.price-tag .value {
+  color: #8bfaff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.details-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn-primary,
+.btn-secondary {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2cced1 0%, #1bb7bd 100%);
+  color: #000;
+  box-shadow: 0 5px 15px rgba(44, 206, 209, 0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 25px rgba(44, 206, 209, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #7d51ff 0%, #6938e8 100%);
+  color: white;
+  box-shadow: 0 5px 15px rgba(125, 81, 255, 0.3);
+}
+
+.btn-secondary:hover {
+  box-shadow: 0 8px 25px rgba(125, 81, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.rental-form {
+  margin-top: 25px;
+  padding: 25px;
+  background: rgba(26, 26, 40, 0.5);
+  border-radius: 15px;
+  border: 1px solid rgba(168, 116, 255, 0.2);
+  display: none;
+}
+
+.rental-form.active {
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  color: #b79cff;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(29, 29, 43, 0.9);
+  border: 1px solid rgba(168, 116, 255, 0.3);
+  border-radius: 8px;
+  color: #e6e6e6;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #a874ff;
+  box-shadow: 0 0 0 3px rgba(168, 116, 255, 0.1);
+}
+
+.rental-total {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(139, 250, 255, 0.1);
+  border-radius: 10px;
+}
+
+.rental-total .label {
+  color: #b79cff;
+  font-size: 14px;
+}
+
+.rental-total .value {
+  color: #8bfaff;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.thank-you-content {
+  text-align: center;
+  padding: 50px 30px;
+}
+
+.thank-you-content h2 {
+  color: #2cced1;
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+.thank-you-content p {
+  color: #b5b5c7;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.purchase-confirm {
+  text-align: center;
+}
+
+.purchase-info {
+  margin: 20px 0;
+  line-height: 1.6;
+}
+
+.purchase-info .price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #a874ff;
+}
+
+.purchase-note {
+  background: rgba(168, 116, 255, 0.1);
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.purchase-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}

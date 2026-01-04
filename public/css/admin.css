@@ -1,0 +1,273 @@
+/* ===============================
+   RESET + BASE
+=============================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+  color: #eee;
+  min-height: 100vh;
+}
+
+/* ===============================
+   LAYOUT
+=============================== */
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===============================
+   SIDEBAR
+=============================== */
+.sidebar {
+  width: 280px;
+  background: linear-gradient(
+    180deg,
+    rgba(21, 21, 28, 0.95) 0%,
+    rgba(15, 15, 20, 0.95) 100%
+  );
+  backdrop-filter: blur(10px);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(168, 116, 255, 0.2);
+  box-shadow: 5px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  background: linear-gradient(135deg, #a874ff 0%, #24c9c9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sidebar .badge {
+  align-self: center;
+  margin-bottom: 30px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff4d4d, #ff9f43);
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
+  letter-spacing: 1px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar nav button {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: rgba(28, 28, 36, 0.5);
+  color: #d6d6d6;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar nav button::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: linear-gradient(180deg, #a874ff, #24c9c9);
+  transform: translateX(-3px);
+  transition: 0.3s;
+}
+
+.sidebar nav button:hover,
+.sidebar nav button.active {
+  background: rgba(36, 36, 48, 0.8);
+  border-color: rgba(168, 116, 255, 0.5);
+  transform: translateX(5px);
+  color: #8ef6ff;
+}
+
+.sidebar nav button:hover::before,
+.sidebar nav button.active::before {
+  transform: translateX(0);
+}
+
+.logout {
+  margin-top: auto;
+  text-align: center;
+  padding: 14px;
+  color: #ff7676;
+  text-decoration: none;
+  border-radius: 12px;
+  background: rgba(37, 25, 25, 0.5);
+  transition: all 0.3s;
+  border: 1px solid rgba(255, 118, 118, 0.2);
+  font-weight: 500;
+}
+
+.logout:hover {
+  background: rgba(58, 31, 31, 0.8);
+  border-color: #ff7676;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 118, 118, 0.3);
+}
+
+/* ===============================
+   CONTENT
+=============================== */
+.content {
+  flex: 1;
+  padding: 50px 60px;
+  overflow-y: auto;
+}
+
+.content h1 {
+  margin-bottom: 40px;
+  font-size: 42px;
+  background: linear-gradient(135deg, #a874ff 0%, #24c9c9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+/* ===============================
+   TABS
+=============================== */
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+/* ===============================
+   ADMIN PROFILE (на базе user)
+=============================== */
+#adminProfile {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#adminProfile .profile-card {
+  display: flex;
+  gap: 30px;
+  padding: 35px;
+  background: linear-gradient(
+    135deg,
+    rgba(27, 27, 36, 0.9),
+    rgba(24, 24, 36, 0.9)
+  );
+  border: 1px solid rgba(168, 116, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(168, 116, 255, 0.15);
+}
+
+.profile-photo {
+  width: 260px;
+  height: 320px;
+  border-radius: 15px;
+  border: 2px solid #a874ff;
+  overflow: hidden;
+  background: #121212;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #d8caff;
+}
+
+.info-grid {
+  display: grid;
+  gap: 15px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  background: rgba(20, 20, 28, 0.5);
+  border-radius: 10px;
+  border: 1px solid rgba(168, 116, 255, 0.1);
+}
+
+.info-row .label {
+  min-width: 120px;
+  font-weight: 600;
+  color: #b79cff;
+}
+
+.info-row .value {
+  color: #eee;
+}
+
+/* ===============================
+   STATS / USERS PLACEHOLDERS
+=============================== */
+#statsGrid,
+#usersList {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .content {
+    padding: 30px 20px;
+  }
+
+  #adminProfile .profile-card {
+    flex-direction: column;
+    align-items: center;
+  }
+}

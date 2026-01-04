@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel — TechRent</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+<div class="container">
+
+  <aside class="sidebar">
+    <h2>TechRent</h2>
+    <span class="badge">ADMIN</span>
+
+    <nav>
+      <button data-tab="stats" class="active">📊 Статистика</button>
+      <button data-tab="users">👥 Пользователи</button>
+      <button data-tab="profile">👤 Профиль</button>
+    </nav>
+
+    <a href="/logout" class="logout">Выйти</a>
+  </aside>
+
+  <main class="content">
+
+    <section id="stats" class="tab active">
+      <h1>Статистика</h1>
+      <div id="statsGrid"></div>
+    </section>
+
+    <section id="users" class="tab">
+      <h1>Пользователи</h1>
+      <div id="usersList"></div>
+    </section>
+
+    <section id="profile" class="tab">
+      <h1>Профиль администратора</h1>
+      <div id="adminProfile"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

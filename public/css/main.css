@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #121212; /* глубокий серый фон */
+  color: #f1f1f1; /* светлый контрастный текст */
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url('bg_login.jpg'); /* можно использовать фоновое изображение с оборудованием */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.95;
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 40px;
+  color: #7C4DFF; /* фирменный фиолетовый */
+  letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(124, 77, 255, 0.3);
+}
+
+a {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #7C4DFF, #3CCFCF);
+  transition: all 0.3s ease;
+  margin: 0 10px;
+  box-shadow: 0 0 20px rgba(124, 77, 255, 0.2);
+}
+
+a:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(60, 207, 207, 0.4);
+}
+
+a:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+footer {
+  position: absolute;
+  bottom: 10px;
+  color: #999;
+  font-size: 13px;
+}

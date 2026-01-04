@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход — TechRent</title>
+  <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+  <div class="background">
+  <div class="bg-gradient"></div>
+  <div class="floating-image"></div>
+  <div class="floating-image"></div>
+  <div class="floating-image"></div>
+  <div class="floating-image"></div> <!-- НОВАЯ КАРТИНКА -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
+
+  <div class="logo-container">
+    <a href="home.html" class="logo">TechRent</a>
+  </div>
+
+  <div class="form-container">
+    <h1>Добро пожаловать!</h1>
+    <p class="subtitle">Войдите в свой аккаунт для продолжения</p>
+
+    <div id="errorMessage" class="error-message hidden"></div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="login">
+          <span class="icon">👤</span>
+          Логин или Email
+        </label>
+        <input type="text" id="login" name="login" placeholder="Введите логин" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password">
+          <span class="icon">🔒</span>
+          Пароль
+        </label>
+        <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+      </div>
+
+      <div class="forgot-password">
+        <a href="#">Забыли пароль?</a>
+      </div>
+
+      <button type="submit">
+        <span>Войти в аккаунт</span>
+      </button>
+    </form>
+
+    <div class="footer-links">
+      <p>
+        Нет аккаунта? 
+        <a href="register.html">Создать бесплатно →</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+
+</html>

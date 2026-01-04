@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Оборудование</title>
+    <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="css/product_rent.css">
+    <link rel="stylesheet" href="css/product_purchases.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">TechRent</div>
+
+    <nav class="nav">
+        <a href="index.html">Главная</a>
+        <a href="catalog.html">Каталог</a>
+        <a href="profile.html">Личный кабинет</a>
+        <a href="login.html">Вход</a>
+        <a href="product.html">Продукт</a>
+    </nav>
+</header>
+
+<section class="product-container">
+
+    <img class="product-img" src="img/bridge.jpg" alt="Фото товара">
+
+    <div class="product-content">
+        <h1 class="product-title"></h1>
+        <p class="product-desc"></p>
+        <div class="product-price"></div>
+
+        <div class="btn-row">
+            <button class="btn rent">Арендовать</button>
+            <button class="btn buy">Купить</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно аренды -->
+<div class="modal" id="rentModal">
+    <div class="modal-content">
+        <span class="close" id="closeRent">&times;</span>
+
+        <h2>Аренда оборудования</h2>
+
+        <form id="rentForm">
+            <label>Оборудование:</label>
+            <input type="text" id="rentEquipment" readonly>
+
+            <label>Ваше имя:</label>
+            <input type="text" id="rentUserName" placeholder="Введите имя">
+
+            <label>Дата начала аренды:</label>
+            <input type="date" id="rentStart">
+
+            <label>Дата окончания аренды:</label>
+            <input type="date" id="rentEnd">
+
+            <label>Стоимость аренды (₴):</label>
+            <input type="text" id="rentPrice" readonly>
+
+            <button type="submit" class="btn rent-submit">Подтвердить аренду</button>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно покупки -->
+<div class="modal" id="buyModal">
+    <div class="modal-content">
+        <span class="close" id="closeBuy">&times;</span>
+
+        <h2>Покупка оборудования</h2>
+
+        <form id="buyForm">
+
+            <label>Оборудование:</label>
+            <input type="text" id="buyEquipment" readonly>
+
+            <label>Количество:</label>
+            <input type="number" id="buyQuantity" min="1" value="1">
+
+            <label>Ваше имя:</label>
+            <input type="text" id="buyUserName" placeholder="Введите имя">
+
+            <label>Дата покупки:</label>
+            <input type="text" id="buyDate" readonly>
+
+            <label>Сумма покупки (₴):</label>
+            <input type="text" id="buyTotal" readonly>
+
+            <button type="submit" class="btn buy-submit">Подтвердить покупку</button>
+        </form>
+    </div>
+</div>
+
+
+</section>
+
+<footer class="footer">
+    <p>© 2025 TechRent. Все права защищены.</p>
+</footer>
+
+<script src="js/details.js"></script>
+<script src="js/product.js"></script>
+</body>
+</html>

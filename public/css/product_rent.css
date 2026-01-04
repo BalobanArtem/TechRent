@@ -1,0 +1,77 @@
+/* Модальное окно */
+.modal {
+    display: none; /* включаем flex для центрирования */
+    position: fixed;
+    top: 0;
+    left: 0; /* растягивается от левого края */
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+    justify-content: center;   /* по горизонтали */
+    align-items: center;       /* по вертикали */
+    z-index: 9999;
+}
+
+/* Контент модалки */
+.modal-content {
+    background: #555558;
+    width: 450px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    border: 1px solid #333;
+    position: relative;
+}
+
+.modal-content h2 {
+    text-align: center;
+    color: #8b3dff;
+    margin-bottom: 20px;
+}
+
+/* Кнопка закрытия */
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 28px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #fff;
+}
+
+#rentForm label {
+    display: block;
+    margin-top: 12px;
+    color: #ccc;
+}
+
+#rentForm input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: none;
+    background: #2c2c33;
+    color: #fff;
+}
+
+/* Кнопка подтверждения */
+.rent-submit {
+    width: 100%;
+    margin-top: 20px;
+    background: #8b3dff;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rent-submit:hover {
+    background: #6a0dad;
+}
