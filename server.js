@@ -81,9 +81,16 @@ app.get("/product.html", (req, res) => {
 });
 
 app.get("/admin.html", (req, res) => {
+  console.log('📍 Запрос /admin.html');
+  console.log('🔐 Сессия:', req.session.user ? 'Есть' : 'Нет');
+  console.log('👤 Роль:', req.session.user?.role);
+  
   if (!req.session.user || req.session.user.role !== "admin") {
+    console.log('❌ Доступ запрещен - редирект на /login.html');
     return res.redirect("/login.html");
   }
+  
+  console.log('✅ Доступ разрешен');
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
 

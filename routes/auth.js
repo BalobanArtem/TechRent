@@ -11,6 +11,7 @@ const router = express.Router();
    HELPERS
 ===================================================== */
 function createSession(req, user) {
+  console.log('📝 Создание сессии для:', user.login, '| Роль:', user.role);
   req.session.user = {
     id: user.user_id || user.profile_id,
     profile_id: user.profile_id,
@@ -21,6 +22,7 @@ function createSession(req, user) {
     role: user.role,
     photo: user.photo || null
   };
+  console.log('✅ Сессия создана:', req.session.user);
 }
 
 async function verifyPassword(input, hash) {
@@ -44,12 +46,19 @@ function isAuth(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
+  console.log('🔐 isAdmin middleware:');
+  console.log('   Session:', req.session.user ? 'Есть' : 'Нет');
+  console.log('   Role:', req.session.user?.role);
+  
   if (!req.session.user || req.session.user.role !== "admin") {
+    console.log('❌ isAdmin: Доступ запрещен');
     return res.status(403).json({
       success: false,
       message: "Доступ запрещён"
     });
   }
+  
+  console.log('✅ isAdmin: Доступ разрешен');
   next();
 }
 
@@ -370,24 +379,251 @@ router.post("/api/profile/upload-photo", isAuth, upload.single("photo"), async (
 });
 
 /* =====================================================
-   ADMIN
+   ADMIN - USERS LIST
 ===================================================== */
 
 router.get("/admin/users", isAdmin, async (req, res) => {
   try {
     const pool = await sql.connect(config);
     const result = await pool.request().query(`
-      SELECT profile_id, full_name, email, phone, login, created_at
-      FROM ProfileData
-      WHERE role='user'
-      ORDER BY created_at DESC
+      SELECT 
+        p.profile_id, 
+        p.full_name, 
+        p.email, 
+        p.phone, 
+        p.login, 
+        p.created_at,
+        u.user_id,
+        ISNULL((SELECT COUNT(*) FROM Purchases WHERE user_id = u.user_id), 0) as purchases_count,
+        ISNULL((SELECT COUNT(*) FROM Rental WHERE user_id = u.user_id), 0) as rentals_count,
+        ISNULL((SELECT SUM(price) FROM Purchases WHERE user_id = u.user_id), 0) as total_spent
+      FROM ProfileData p
+      LEFT JOIN Users u ON p.profile_id = u.profile_id
+      WHERE p.role='user'
+      ORDER BY p.created_at DESC
     `);
+    
+    console.log('👥 Загружено пользователей:', result.recordset.length);
 
     res.json({ success: true, users: result.recordset });
 
   } catch (e) {
     console.error("ADMIN USERS ERROR:", e);
     res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+/* =====================================================
+   ADMIN - DELETE USER
+===================================================== */
+
+router.delete("/admin/users/:profile_id", isAdmin, async (req, res) => {
+  try {
+    const { profile_id } = req.params;
+    const pool = await sql.connect(config);
+    
+    // Получаем user_id
+    const userResult = await pool.request()
+      .input('profile_id', sql.Int, profile_id)
+      .query('SELECT user_id FROM Users WHERE profile_id = @profile_id');
+    
+    if (userResult.recordset.length) {
+      const user_id = userResult.recordset[0].user_id;
+      
+      // Удаляем связанные данные
+      await pool.request()
+        .input('user_id', sql.Int, user_id)
+        .query('DELETE FROM Purchases WHERE user_id = @user_id');
+      
+      await pool.request()
+        .input('user_id', sql.Int, user_id)
+        .query('DELETE FROM Rental WHERE user_id = @user_id');
+      
+      await pool.request()
+        .input('user_id', sql.Int, user_id)
+        .query('DELETE FROM Users WHERE user_id = @user_id');
+    }
+    
+    // Удаляем профиль
+    await pool.request()
+      .input('profile_id', sql.Int, profile_id)
+      .query('DELETE FROM ProfileData WHERE profile_id = @profile_id');
+    
+    res.json({ success: true, message: 'Пользователь удален' });
+
+  } catch (e) {
+    console.error("DELETE USER ERROR:", e);
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+/* =====================================================
+   ADMIN - STATISTICS (SIMPLE TEST)
+===================================================== */
+
+router.get("/admin/statistics-test", isAdmin, async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+    
+    // Простейший тест
+    const test1 = await pool.request().query("SELECT COUNT(*) as count FROM ProfileData");
+    console.log('✅ Test 1 - ProfileData count:', test1.recordset[0].count);
+    
+    const test2 = await pool.request().query("SELECT COUNT(*) as count FROM Purchases");
+    console.log('✅ Test 2 - Purchases count:', test2.recordset[0].count);
+    
+    res.json({ 
+      success: true, 
+      message: 'Tests passed',
+      profiledata: test1.recordset[0].count,
+      purchases: test2.recordset[0].count
+    });
+    
+  } catch (e) {
+    console.error("❌ TEST ERROR:", e);
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+/* =====================================================
+   ADMIN - STATISTICS
+===================================================== */
+
+router.get("/admin/statistics", isAdmin, async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+    
+    // Разбиваем на отдельные запросы для диагностики
+    const usersCount = await pool.request().query(
+      "SELECT COUNT(*) as total FROM ProfileData WHERE role='user'"
+    );
+    
+    const purchasesCount = await pool.request().query(
+      "SELECT COUNT(*) as total FROM Purchases"
+    );
+    
+    const purchasesRevenue = await pool.request().query(
+      "SELECT ISNULL(SUM(CAST(price AS DECIMAL(18,2))), 0) as total FROM Purchases"
+    );
+    
+    const rentalsCount = await pool.request().query(
+      "SELECT COUNT(*) as total FROM Rental"
+    );
+    
+    const rentalsActive = await pool.request().query(
+      "SELECT COUNT(*) as total FROM Rental WHERE status='active'"
+    );
+    
+    const rentalsRevenue = await pool.request().query(
+      "SELECT ISNULL(SUM(CAST(total_price AS DECIMAL(18,2))), 0) as total FROM Rental"
+    );
+    
+    const equipAvailable = await pool.request().query(
+      "SELECT COUNT(*) as total FROM Equipment WHERE status='available'"
+    );
+    
+    const equipRented = await pool.request().query(
+      "SELECT COUNT(*) as total FROM Equipment WHERE status='rented'"
+    );
+    
+    const equipSold = await pool.request().query(
+      "SELECT COUNT(*) as total FROM Equipment WHERE status='sold'"
+    );
+    
+    const statistics = {
+      total_users: usersCount.recordset[0].total,
+      total_purchases: purchasesCount.recordset[0].total,
+      total_revenue: purchasesRevenue.recordset[0].total,
+      total_rentals: rentalsCount.recordset[0].total,
+      active_rentals: rentalsActive.recordset[0].total,
+      rental_revenue: rentalsRevenue.recordset[0].total,
+      available_equipment: equipAvailable.recordset[0].total,
+      rented_equipment: equipRented.recordset[0].total,
+      sold_equipment: equipSold.recordset[0].total
+    };
+    
+    // Статистика по месяцам
+    let monthlyStats = [];
+    try {
+      const monthly = await pool.request().query(`
+        SELECT 
+          FORMAT(purch_date, 'yyyy-MM') as month,
+          COUNT(*) as count,
+          ISNULL(SUM(CAST(price AS DECIMAL(18,2))), 0) as revenue
+        FROM Purchases
+        WHERE purch_date >= DATEADD(MONTH, -6, GETDATE())
+        GROUP BY FORMAT(purch_date, 'yyyy-MM')
+        ORDER BY month
+      `);
+      monthlyStats = monthly.recordset;
+    } catch (err) {
+      console.error('⚠️ Ошибка загрузки месячной статистики:', err.message);
+    }
+    
+    // Популярные типы
+    let popularTypes = [];
+    try {
+      const popular = await pool.request().query(`
+        SELECT TOP 5
+          t.type_name,
+          COUNT(*) as count
+        FROM (
+          SELECT equipment_id FROM Purchases
+          UNION ALL
+          SELECT equipment_id FROM Rental
+        ) AS orders
+        LEFT JOIN Equipment e ON orders.equipment_id = e.equipment_id
+        LEFT JOIN EquipDescr ed ON e.equipDescr_id = ed.equipDescr_id
+        LEFT JOIN Types t ON ed.type_id = t.type_id
+        WHERE t.type_name IS NOT NULL
+        GROUP BY t.type_name
+        ORDER BY count DESC
+      `);
+      popularTypes = popular.recordset;
+    } catch (err) {
+      console.error('⚠️ Ошибка загрузки популярных типов:', err.message);
+    }
+    
+    console.log('📊 Статистика:', statistics);
+
+    res.json({ 
+      success: true, 
+      statistics: statistics,
+      monthly: monthlyStats,
+      popular_types: popularTypes
+    });
+
+  } catch (e) {
+    console.error("❌ ADMIN STATS ERROR:", e.message);
+    console.error("❌ Stack:", e.stack);
+    res.status(500).json({ success: false, message: e.message, error: e.toString() });
+  }
+});
+
+/* =====================================================
+   ADMIN - PROFILE
+===================================================== */
+
+router.get("/admin/profile", isAdmin, async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input("profile_id", sql.Int, req.session.user.profile_id)
+      .query(`
+        SELECT profile_id, full_name, email, phone, login, role, photo
+        FROM ProfileData
+        WHERE profile_id=@profile_id
+      `);
+
+    if (!result.recordset.length) {
+      return res.status(404).json({ success: false, message: "Пользователь не найден" });
+    }
+
+    res.json({ success: true, user: result.recordset[0] });
+
+  } catch (e) {
+    console.error("ADMIN PROFILE ERROR:", e);
+    res.status(500).json({ success: false, message: "Ошибка сервера" });
   }
 });
 

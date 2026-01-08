@@ -19,29 +19,181 @@
       <button data-tab="profile">👤 Профиль</button>
     </nav>
 
-    <a href="/logout" class="logout">Выйти</a>
+    <a href="/logout" class="logout">⟵ Выйти</a>
   </aside>
 
   <main class="content">
 
+    <!-- СТАТИСТИКА -->
     <section id="stats" class="tab active">
-      <h1>Статистика</h1>
-      <div id="statsGrid"></div>
+      <h1>📊 Статистика системы</h1>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-value" id="statUsers">0</div>
+          <div class="stat-label">Всего пользователей</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">🛒</div>
+          <div class="stat-value" id="statPurchases">0</div>
+          <div class="stat-label">Покупок</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-value" id="statRentals">0</div>
+          <div class="stat-label">Аренд</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-value" id="statActive">0</div>
+          <div class="stat-label">Активных аренд</div>
+        </div>
+        
+        <div class="stat-card highlight">
+          <div class="stat-icon">💰</div>
+          <div class="stat-value" id="statRevenue">0₴</div>
+          <div class="stat-label">Общий доход</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-value" id="statAvailable">0</div>
+          <div class="stat-label">Доступно товаров</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>📈 Продажи по месяцам</h3>
+          <canvas id="salesChart"></canvas>
+        </div>
+        
+        <div class="chart-card">
+          <h3>🎯 Популярные категории</h3>
+          <canvas id="categoriesChart"></canvas>
+        </div>
+      </div>
+
+      <div class="equipment-status">
+        <h3>📊 Статус оборудования</h3>
+        <div class="status-bars">
+          <div class="status-bar">
+            <div class="status-label">
+              <span>✅ Доступно</span>
+              <span id="availableCount">0</span>
+            </div>
+            <div class="bar">
+              <div class="bar-fill available" id="availableBar" style="width: 0%"></div>
+            </div>
+          </div>
+          
+          <div class="status-bar">
+            <div class="status-label">
+              <span>📅 В аренде</span>
+              <span id="rentedCount">0</span>
+            </div>
+            <div class="bar">
+              <div class="bar-fill rented" id="rentedBar" style="width: 0%"></div>
+            </div>
+          </div>
+          
+          <div class="status-bar">
+            <div class="status-label">
+              <span>🔒 Продано</span>
+              <span id="soldCount">0</span>
+            </div>
+            <div class="bar">
+              <div class="bar-fill sold" id="soldBar" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
+    <!-- ПОЛЬЗОВАТЕЛИ -->
     <section id="users" class="tab">
-      <h1>Пользователи</h1>
-      <div id="usersList"></div>
+      <h1>👥 Управление пользователями</h1>
+      
+      <div class="users-header">
+        <input type="text" id="userSearch" placeholder="🔍 Поиск по имени или email..." class="search-input">
+        <div class="users-count">Всего: <span id="usersTotal">0</span></div>
+      </div>
+
+      <div id="usersList" class="users-list">
+        <p style="text-align: center; padding: 40px; color: #8181a0;">⏳ Загрузка пользователей...</p>
+      </div>
     </section>
 
+    <!-- ПРОФИЛЬ АДМИНА -->
     <section id="profile" class="tab">
-      <h1>Профиль администратора</h1>
-      <div id="adminProfile"></div>
+      <h1>👤 Профиль администратора</h1>
+      
+      <div class="profile-card">
+        <div class="profile-left">
+          <div class="profile-photo">
+            <img src="https://via.placeholder.com/150/1a1a2e/ff6b6b?text=ADMIN" alt="Фото" id="adminPhoto">
+          </div>
+          <button class="upload-photo-btn">📷 Загрузить фото</button>
+        </div>
+
+        <div class="profile-info">
+          <h2>📋 Персональные данные</h2>
+          
+          <div class="info-grid">
+            <div class="info-row">
+              <span class="label">👤 Имя:</span>
+              <span class="value">Загрузка...</span>
+            </div>
+            <div class="info-row">
+              <span class="label">🔑 Логин:</span>
+              <span class="value">Загрузка...</span>
+            </div>
+            <div class="info-row">
+              <span class="label">📧 Email:</span>
+              <span class="value">Загрузка...</span>
+            </div>
+            <div class="info-row">
+              <span class="label">📱 Телефон:</span>
+              <span class="value">Загрузка...</span>
+            </div>
+            <div class="info-row">
+              <span class="label">🛡️ Роль:</span>
+              <span class="value admin-badge">АДМИНИСТРАТОР</span>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <button class="edit-btn">✏️ Редактировать</button>
+            <button class="save-btn">💾 Сохранить</button>
+          </div>
+        </div>
+      </div>
     </section>
 
   </main>
 </div>
 
+<!-- Модалка подтверждения удаления -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content">
+    <h2>⚠️ Удаление пользователя</h2>
+    <p>Вы уверены, что хотите удалить этого пользователя?</p>
+    <p><strong id="deleteUserName"></strong></p>
+    <p style="color: #ff6b6b; font-size: 14px; margin-top: 10px;">
+      Это действие удалит все его покупки и аренды!
+    </p>
+    <div class="modal-buttons">
+      <button class="btn-danger" id="confirmDelete">🗑️ Удалить</button>
+      <button class="btn-secondary" id="cancelDelete">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>

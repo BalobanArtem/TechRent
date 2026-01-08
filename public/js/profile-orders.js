@@ -154,7 +154,7 @@ function renderPurchases(purchases) {
         padding: 20px;
         margin-bottom: 15px;
         display: grid;
-        grid-template-columns: 150px 1fr auto;
+        grid-template-columns: 150px 1fr;
         gap: 20px;
         align-items: center;
         transition: all 0.3s ease;
@@ -175,20 +175,6 @@ function renderPurchases(purchases) {
             💰 ${item.price.toLocaleString()}₴
           </p>
         </div>
-        
-        <a href="product.html?id=${item.equipment_id}" style="
-          padding: 10px 20px;
-          background: linear-gradient(135deg, #a874ff 0%, #8b5cf6 100%);
-          color: white;
-          text-decoration: none;
-          border-radius: 8px;
-          font-size: 14px;
-          font-weight: 600;
-          transition: all 0.3s ease;
-        " onmouseover="this.style.transform='translateY(-2px)'" 
-           onmouseout="this.style.transform='translateY(0)'">
-          Подробнее
-        </a>
       </div>
     `;
   }).join('');
@@ -248,7 +234,7 @@ function renderRentals(rentals) {
         padding: 20px;
         margin-bottom: 15px;
         display: grid;
-        grid-template-columns: 150px 1fr auto;
+        grid-template-columns: 150px 1fr;
         gap: 20px;
         align-items: center;
         transition: all 0.3s ease;
@@ -272,20 +258,6 @@ function renderRentals(rentals) {
             ${statusText[item.status] || item.status}
           </p>
         </div>
-        
-        <a href="product.html?id=${item.equipment_id}" style="
-          padding: 10px 20px;
-          background: linear-gradient(135deg, #a874ff 0%, #8b5cf6 100%);
-          color: white;
-          text-decoration: none;
-          border-radius: 8px;
-          font-size: 14px;
-          font-weight: 600;
-          transition: all 0.3s ease;
-        " onmouseover="this.style.transform='translateY(-2px)'" 
-           onmouseout="this.style.transform='translateY(0)'">
-          Подробнее
-        </a>
       </div>
     `;
   }).join('');
