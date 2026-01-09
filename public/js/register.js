@@ -13,7 +13,7 @@ form.addEventListener("submit", async (e) => {
 
   // Проверка длины пароля
   if (data.password.length < 6) {
-    showError("Пароль должен содержать минимум 6 символов");
+    showError("Пароль повинен містити мінімум 6 символів");
     return;
   }
 
@@ -28,7 +28,7 @@ form.addEventListener("submit", async (e) => {
 
     // ❌ Ошибка
     if (!response.ok) {
-      showError(result.message || "Ошибка регистрации");
+      showError(result.message || "Помилка реєстрації");
       return;
     }
 
@@ -42,7 +42,7 @@ form.addEventListener("submit", async (e) => {
 
   } catch (err) {
     console.error("❌ Fetch error:", err);
-    showError("Ошибка соединения с сервером");
+    showError("Помилка з'єднання з сервером");
   }
 });
 
@@ -51,7 +51,7 @@ function showError(message) {
   errorMessage.classList.remove("hidden");
   errorMessage.classList.add("shake");
 
-  // Убрать shake после анимации
+  // Убрать shake після анімації
   setTimeout(() => {
     errorMessage.classList.remove("shake");
   }, 400);

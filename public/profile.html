@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 
 <head>
     <meta charset="UTF-8">
-    <title>Личный кабинет</title>
+    <title>Особистий кабінет</title>
     <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/navbar.css">
 </head>
@@ -13,9 +13,9 @@
     <header class="header">
         <div class="logo"><a href="home.html">TechRent</a></div>
         <nav class="nav">
-            <a href="home.html">Главная</a>
+            <a href="home.html">Головна</a>
             <a href="catalog.html">Каталог</a>
-            <a href="profile.html" class="active">Личный кабинет</a>
+            <a href="profile.html" class="active">Особистий кабінет</a>
         </nav>
     </header>
 
@@ -27,62 +27,62 @@
             <nav>
                 <a class="nav-item active" href="#" data-tab="profile" onclick="switchTab('profile')">
                     <span class="icon">👤</span>
-                    <span>Профиль</span>
+                    <span>Профіль</span>
                 </a>
                 <a class="nav-item" href="#" data-tab="purchases" onclick="switchTab('purchases')">
                     <span class="icon">🛍️</span>
-                    <span>Мои покупки</span>
+                    <span>Мої покупки</span>
                 </a>
                 <a class="nav-item" href="#" data-tab="rentals" onclick="switchTab('rentals')">
                     <span class="icon">📦</span>
-                    <span>Мои аренды</span>
+                    <span>Мої оренди</span>
                 </a>
             </nav>
 
-            <a class="logout" href="/logout">⟵ Выйти из аккаунта</a>
+            <a class="logout" href="/logout">⟵ Вийти з акаунту</a>
         </aside>
 
         <main class="content">
-            <h1>Личный кабинет</h1>
+            <h1>Особистий кабінет</h1>
 
             <div id="profileContent" class="tab-content active">
                 <div class="cards-grid">
                     <div class="card profile-card">
                         <div class="profile-left-column">
                             <div class="profile-photo">
-                                <img src="https://via.placeholder.com/150/1a1a2e/a874ff?text=USER" alt="Фото профиля">
+                                <img src="https://via.placeholder.com/150/1a1a2e/a874ff?text=USER" alt="Фото профілю">
                             </div>
-                            <button class="upload-photo-btn">📷 Загрузить фото</button>
+                            <button class="upload-photo-btn">📷 Завантажити фото</button>
                         </div>
 
                         <div class="profile-info">
                             <h2>
                                 <span class="icon">📋</span>
-                                Персональные данные
+                                Персональні дані
                             </h2>
 
                             <div class="info-grid">
                                 <div class="info-row">
-                                    <span class="label">👤 Имя:</span>
-                                    <span class="value">Загрузка...</span>
+                                    <span class="label">👤 Ім’я:</span>
+                                    <span class="value">Завантаження...</span>
                                 </div>
                                 <div class="info-row">
-                                    <span class="label">🔑 Логин:</span>
-                                    <span class="value">Загрузка...</span>
+                                    <span class="label">🔑 Логін:</span>
+                                    <span class="value">Завантаження...</span>
                                 </div>
                                 <div class="info-row">
                                     <span class="label">📧 Email:</span>
-                                    <span class="value">Загрузка...</span>
+                                    <span class="value">Завантаження...</span>
                                 </div>
                                 <div class="info-row">
                                     <span class="label">📱 Телефон:</span>
-                                    <span class="value">Загрузка...</span>
+                                    <span class="value">Завантаження...</span>
                                 </div>
                             </div>
 
                             <div class="btn-group">
-                                <button class="edit-btn">✏️ Редактировать</button>
-                                <button class="save-btn">💾 Сохранить</button>
+                                <button class="edit-btn">✏️ Редагувати</button>
+                                <button class="save-btn">💾 Зберегти</button>
                             </div>
                         </div>
                     </div>
@@ -96,11 +96,11 @@
                         <div class="stats-grid">
                             <div class="stat-card">
                                 <div class="number">0</div>
-                                <div class="label">Активных аренд</div>
+                                <div class="label">Активних оренд</div>
                             </div>
                             <div class="stat-card">
                                 <div class="number">0</div>
-                                <div class="label">Всего заказов</div>
+                                <div class="label">Усього замовлень</div>
                             </div>
                             <div class="stat-card">
                                 <div class="number">0</div>
@@ -113,24 +113,25 @@
 
             <div id="purchasesContent" class="tab-content">
                 <div class="card">
-                    <h2>🛍️ История покупок</h2>
+                    <h2>🛍️ Історія покупок</h2>
                     <div id="purchasesList">
-                        <p style="text-align: center; padding: 40px; color: #8181a0;">⏳ Загрузка...</p>
+                        <p style="text-align: center; padding: 40px; color: #8181a0;">⏳ Завантаження...</p>
                     </div>
                 </div>
             </div>
 
             <div id="rentalsContent" class="tab-content">
                 <div class="card">
-                    <h2>📦 Текущие аренды</h2>
+                    <h2>📦 Поточні оренди</h2>
                     <div id="rentalsList">
-                        <p style="text-align: center; padding: 40px; color: #8181a0;">⏳ Загрузка...</p>
+                        <p style="text-align: center; padding: 40px; color: #8181a0;">⏳ Завантаження...</p>
                     </div>
                 </div>
             </div>
         </main>
 
     </div>
+
     <script src="js/profile.js"></script>
     <script src="js/profile-orders.js"></script>
 </body>

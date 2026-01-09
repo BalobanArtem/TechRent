@@ -1,5 +1,5 @@
 // ============================================================
-// routes/equipment.js - Роуты для каталога, аренды и покупки
+// routes/equipment.js — Роути для каталогу, оренди та купівлі
 // ============================================================
 
 const express = require('express');
@@ -7,14 +7,14 @@ const router = express.Router();
 const { sql, config } = require('../db/dbConfig');
 
 /* =====================================================
-   HELPERS
+   ДОПОМІЖНІ ФУНКЦІЇ
 ===================================================== */
 async function getPool() {
   return await sql.connect(config);
 }
 
 /* =====================================================
-   1. ПОЛУЧИТЬ ВСЁ ОБОРУДОВАНИЕ (для каталога)
+   1. ОТРИМАТИ ВСЕ ОБЛАДНАННЯ (для каталогу)
 ===================================================== */
 router.get('/equipment', async (req, res) => {
   try {
@@ -48,13 +48,13 @@ router.get('/equipment', async (req, res) => {
     res.json({ success: true, equipment: result.recordset });
     
   } catch (err) {
-    console.error('❌ Ошибка получения оборудования:', err);
-    res.status(500).json({ success: false, message: 'Ошибка сервера' });
+    console.error('❌ Помилка отримання обладнання:', err);
+    res.status(500).json({ success: false, message: 'Помилка сервера' });
   }
 });
 
 /* =====================================================
-   2. ПОЛУЧИТЬ КОНКРЕТНОЕ ОБОРУДОВАНИЕ
+   2. ОТРИМАТИ КОНКРЕТНЕ ОБЛАДНАННЯ
 ===================================================== */
 router.get('/equipment/:id', async (req, res) => {
   try {
@@ -89,19 +89,19 @@ router.get('/equipment/:id', async (req, res) => {
       `);
     
     if (!result.recordset.length) {
-      return res.json({ success: false, message: 'Оборудование не найдено' });
+      return res.json({ success: false, message: 'Обладнання не знайдено' });
     }
     
     res.json({ success: true, equipment: result.recordset[0] });
     
   } catch (err) {
-    console.error('❌ Ошибка получения данных:', err);
-    res.status(500).json({ success: false, message: 'Ошибка сервера' });
+    console.error('❌ Помилка отримання даних:', err);
+    res.status(500).json({ success: false, message: 'Помилка сервера' });
   }
 });
 
 /* =====================================================
-   3. ПОЛУЧИТЬ ВСЕ БРЕНДЫ (для фильтров)
+   3. ОТРИМАТИ ВСІ БРЕНДИ (для фільтрів)
 ===================================================== */
 router.get('/brands', async (req, res) => {
   try {
@@ -113,13 +113,13 @@ router.get('/brands', async (req, res) => {
     res.json({ success: true, brands: result.recordset });
     
   } catch (err) {
-    console.error('❌ Ошибка получения брендов:', err);
-    res.status(500).json({ success: false, message: 'Ошибка сервера' });
+    console.error('❌ Помилка отримання брендів:', err);
+    res.status(500).json({ success: false, message: 'Помилка сервера' });
   }
 });
 
 /* =====================================================
-   4. ПОЛУЧИТЬ ВСЕ ТИПЫ (для фильтров)
+   4. ОТРИМАТИ ВСІ ТИПИ (для фільтрів)
 ===================================================== */
 router.get('/types', async (req, res) => {
   try {
@@ -131,50 +131,56 @@ router.get('/types', async (req, res) => {
     res.json({ success: true, types: result.recordset });
     
   } catch (err) {
-    console.error('❌ Ошибка получения типов:', err);
-    res.status(500).json({ success: false, message: 'Ошибка сервера' });
+    console.error('❌ Помилка отримання типів:', err);
+    res.status(500).json({ success: false, message: 'Помилка сервера' });
   }
 });
 
 /* =====================================================
-   5. ОФОРМИТЬ АРЕНДУ
+   5. ОФОРМИТИ ОРЕНДУ
 ===================================================== */
 router.post('/rental', async (req, res) => {
   try {
     const { equipment_id, rent_start, rent_end, total_price, user_name } = req.body;
     let { user_id } = req.body;
 
+    console.log('📦 Запит на оренду:', { equipment_id, user_id, total_price });
+
     if (!user_id) {
-      return res.status(400).json({ success: false, message: 'Пользователь не авторизован (отсутствует ID)' });
+      return res.status(400).json({ success: false, message: 'Користувач не авторизований (відсутній ID)' });
     }
 
     const pool = await getPool();
 
-    // Получаем user_id из Users, если есть, иначе fallback на profile_id
+    // Отримуємо user_id з таблиці Users
     const userCheck = await pool.request()
       .input('id', sql.Int, user_id)
       .query('SELECT user_id FROM Users WHERE profile_id = @id OR user_id = @id');
 
     if (userCheck.recordset.length > 0) {
       user_id = userCheck.recordset[0].user_id;
-    } else {
-      user_id = user_id; // fallback на profile_id
     }
 
-    // Проверяем оборудование
+    // Перевіряємо обладнання
     const equipmentCheck = await pool.request()
       .input('equipment_id', sql.Int, equipment_id)
       .query('SELECT status, for_rent FROM Equipment WHERE equipment_id = @equipment_id');
 
     if (!equipmentCheck.recordset.length) {
-      return res.json({ success: false, message: 'Оборудование не найдено' });
+      return res.json({ success: false, message: 'Обладнання не знайдено' });
     }
 
     const equipment = equipmentCheck.recordset[0];
-    if (equipment.status === 'rented') return res.json({ success: false, message: 'Оборудование уже арендовано' });
-    if (equipment.for_rent !== 'yes') return res.json({ success: false, message: 'Недоступно для аренды' });
+    
+    if (equipment.status === 'rented') {
+      return res.json({ success: false, message: 'Обладнання вже в оренді' });
+    }
+    
+    if (equipment.for_rent !== 'yes') {
+      return res.json({ success: false, message: 'Недоступне для оренди' });
+    }
 
-    // Создаём аренду
+    // Створюємо запис оренди
     await pool.request()
       .input('rent_start', sql.DateTime, rent_start)
       .input('rent_end', sql.DateTime, rent_end)
@@ -186,32 +192,45 @@ router.post('/rental', async (req, res) => {
         VALUES (@rent_start, @rent_end, @total_price, 'active', @equipment_id, @user_id)
       `);
 
-    await pool.request()
-      .input('equipment_id', sql.Int, equipment_id)
-      .query('UPDATE Equipment SET status = \'rented\' WHERE equipment_id = @equipment_id');
+    console.log(`✅ Запис у Rental створено`);
 
-    res.json({ success: true, message: 'Аренда успешно оформлена' });
+    // 🔥 АВТОМАТИЧНО оновлюємо статус обладнання
+    const updateResult = await pool.request()
+      .input('equipment_id', sql.Int, equipment_id)
+      .query(`
+        UPDATE Equipment 
+        SET for_rent = 'no', status = 'rented'
+        WHERE equipment_id = @equipment_id
+      `);
+
+    console.log(`✅ Статус оновлено: equipment_id=${equipment_id}, оновлено рядків: ${updateResult.rowsAffected[0]}`);
+
+    res.json({ success: true, message: 'Оренду успішно оформлено' });
 
   } catch (err) {
-    console.error('❌ Ошибка оформления аренды:', err);
-    res.status(500).json({ success: false, message: 'Ошибка сервера' });
+    console.error('❌ Помилка оформлення оренди:', err);
+    console.error('❌ Деталі:', err.message);
+    res.status(500).json({ success: false, message: 'Помилка сервера: ' + err.message });
   }
 });
 
 /* =====================================================
-   6. ОФОРМИТЬ ПОКУПКУ
+   6. ОФОРМИТИ КУПІВЛЮ
 ===================================================== */
 router.post('/purchase', async (req, res) => {
   try {
     const { equipment_id, price, user_name } = req.body;
     let { user_id } = req.body;
 
+    console.log('💰 Запит на купівлю:', { equipment_id, user_id, price });
+
     if (!user_id) {
-      return res.status(400).json({ success: false, message: 'Пользователь не авторизован' });
+      return res.status(400).json({ success: false, message: 'Користувач не авторизований' });
     }
 
     const pool = await getPool();
 
+    // Отримуємо user_id з Users
     const userCheck = await pool.request()
       .input('id', sql.Int, user_id)
       .query('SELECT user_id FROM Users WHERE profile_id = @id OR user_id = @id');
@@ -219,19 +238,29 @@ router.post('/purchase', async (req, res) => {
     if (userCheck.recordset.length > 0) {
       user_id = userCheck.recordset[0].user_id;
     } else {
-      return res.status(404).json({ success: false, message: 'Пользователь не найден' });
+      return res.status(404).json({ success: false, message: 'Користувача не знайдено' });
     }
 
-    // ... (проверки оборудования) ...
+    // Перевіряємо обладнання
     const equipmentCheck = await pool.request()
       .input('equipment_id', sql.Int, equipment_id)
       .query('SELECT status, for_sale FROM Equipment WHERE equipment_id = @equipment_id');
 
-    const equipment = equipmentCheck.recordset[0];
-    if (!equipment || equipment.status === 'sold' || equipment.for_sale !== 'yes') {
-      return res.json({ success: false, message: 'Товар недоступен' });
+    if (!equipmentCheck.recordset.length) {
+      return res.json({ success: false, message: 'Обладнання не знайдено' });
     }
 
+    const equipment = equipmentCheck.recordset[0];
+    
+    if (equipment.status === 'sold') {
+      return res.json({ success: false, message: 'Товар вже продано' });
+    }
+    
+    if (equipment.for_sale !== 'yes') {
+      return res.json({ success: false, message: 'Товар недоступний для купівлі' });
+    }
+
+    // Створюємо запис купівлі
     await pool.request()
       .input('price', sql.Decimal(10, 2), price)
       .input('user_id', sql.Int, user_id)
@@ -241,20 +270,30 @@ router.post('/purchase', async (req, res) => {
         VALUES (GETDATE(), @price, @user_id, @equipment_id)
       `);
 
-    await pool.request()
-      .input('equipment_id', sql.Int, equipment_id)
-      .query('UPDATE Equipment SET status = \'sold\' WHERE equipment_id = @equipment_id');
+    console.log(`✅ Запис у Purchases створено`);
 
-    res.json({ success: true, message: 'Покупка успешно оформлена' });
+    // 🔥 АВТОМАТИЧНО оновлюємо статус обладнання
+    const updateResult = await pool.request()
+      .input('equipment_id', sql.Int, equipment_id)
+      .query(`
+        UPDATE Equipment 
+        SET for_sale = 'no', status = 'sold'
+        WHERE equipment_id = @equipment_id
+      `);
+
+    console.log(`✅ Статус оновлено: equipment_id=${equipment_id}, оновлено рядків: ${updateResult.rowsAffected[0]}`);
+
+    res.json({ success: true, message: 'Купівлю успішно оформлено' });
 
   } catch (err) {
-    console.error('❌ Ошибка оформления покупки:', err);
-    res.status(500).json({ success: false, message: 'Ошибка сервера' });
+    console.error('❌ Помилка оформлення купівлі:', err);
+    console.error('❌ Деталі:', err.message);
+    res.status(500).json({ success: false, message: 'Помилка сервера: ' + err.message });
   }
 });
 
 /* =====================================================
-   7. ПОЛУЧИТЬ ПОКУПКИ ПОЛЬЗОВАТЕЛЯ
+   7. ОТРИМАТИ ПОКУПКИ КОРИСТУВАЧА
 ===================================================== */
 router.get('/user/:user_id/purchases', async (req, res) => {
   try {
@@ -286,13 +325,13 @@ router.get('/user/:user_id/purchases', async (req, res) => {
     res.json({ success: true, purchases: result.recordset });
     
   } catch (err) {
-    console.error('❌ Ошибка получения покупок:', err);
-    res.status(500).json({ success: false, message: 'Ошибка сервера' });
+    console.error('❌ Помилка отримання покупок:', err);
+    res.status(500).json({ success: false, message: 'Помилка сервера' });
   }
 });
 
 /* =====================================================
-   8. ПОЛУЧИТЬ АРЕНДЫ ПОЛЬЗОВАТЕЛЯ
+   8. ОТРИМАТИ ОРЕНДИ КОРИСТУВАЧА
 ===================================================== */
 router.get('/user/:user_id/rentals', async (req, res) => {
   try {
@@ -327,8 +366,36 @@ router.get('/user/:user_id/rentals', async (req, res) => {
     res.json({ success: true, rentals: result.recordset });
     
   } catch (err) {
-    console.error('❌ Ошибка получения аренд:', err);
-    res.status(500).json({ success: false, message: 'Ошибка сервера' });
+    console.error('❌ Помилка отримання оренд:', err);
+    res.status(500).json({ success: false, message: 'Помилка сервера' });
+  }
+});
+
+/* =====================================================
+   9. ПОВЕРНЕННЯ ОБЛАДНАННЯ З ОРЕНДИ (для адмін-панелі)
+===================================================== */
+router.post('/equipment/return', async (req, res) => {
+  try {
+    const { equipment_id } = req.body;
+    
+    const pool = await getPool();
+    
+    // Оновлюємо статус — повертаємо в доступні
+    await pool.request()
+      .input('equipment_id', sql.Int, equipment_id)
+      .query(`
+        UPDATE Equipment 
+        SET for_rent = 'yes', status = 'available'
+        WHERE equipment_id = @equipment_id
+      `);
+    
+    console.log(`✅ Обладнання ${equipment_id} повернено та доступне`);
+    
+    res.json({ success: true, message: 'Обладнання повернено та доступне для оренди' });
+    
+  } catch (e) {
+    console.error('❌ ПОМИЛКА ПОВЕРНЕННЯ:', e);
+    res.status(500).json({ success: false, message: 'Помилка сервера: ' + e.message });
   }
 });
 

@@ -58,12 +58,12 @@ function initPhotoUpload() {
                 const result = await response.json();
                 if (result.success) {
                     document.querySelector('.profile-photo img').src = result.photo + '?t=' + Date.now();
-                    alert('✅ Фото успешно обновлено');
+                    alert('✅ Фото успішно оновлено');
                 } else {
-                    alert('❌ Ошибка: ' + result.message);
+                    alert('❌ Помилка: ' + result.message);
                 }
             } catch (err) {
-                alert('Ошибка сервера при загрузке фото');
+                alert('Помилка сервера при завантаженні фото');
             }
         };
         fileInput.click();
@@ -146,13 +146,13 @@ if (saveBtn) {
                 editBtn.style.pointerEvents = "auto";
                 saveBtn.style.opacity = "0.5";
                 saveBtn.style.pointerEvents = "none";
-                alert('✅ Данные успешно сохранены!');
+                alert('✅ Дані успішно збережено!');
             } else {
                 alert('❌ ' + result.message);
             }
         } catch (err) {
             console.error('Ошибка сохранения:', err);
-            alert('Ошибка при сохранении данных');
+            alert('Помилка при збереженні даних');
         }
     });
 }

@@ -42,7 +42,7 @@ async function loadStatistics() {
     if (!response.ok) {
       console.error('❌ Ошибка загрузки статистики:', response.status);
       if (response.status === 401 || response.status === 403) {
-        alert('Доступ запрещен. Войдите как администратор.');
+        alert('Доступ заборонено. Увійдіть як адміністратор.');
         location.href = "/login.html";
       }
       return;
@@ -88,7 +88,7 @@ async function loadStatistics() {
     document.getElementById('statPurchases').textContent = '?';
     document.getElementById('statRentals').textContent = '?';
     document.getElementById('statActive').textContent = '?';
-    document.getElementById('statRevenue').textContent = 'Ошибка';
+    document.getElementById('statRevenue').textContent = 'Помилка';
     document.getElementById('statAvailable').textContent = '?';
   }
 }
@@ -120,13 +120,13 @@ function buildSalesChart(monthlyData) {
   // Проверяем наличие данных
   if (!monthlyData || monthlyData.length === 0) {
     console.log('⚠️ Нет данных для графика продаж');
-    ctx.parentElement.innerHTML = '<p style="color: #8181a0; text-align: center; padding: 40px;">Нет данных о продажах за последние 6 месяцев</p>';
+    ctx.parentElement.innerHTML = '<p style="color: #8181a0; text-align: center; padding: 40px;">Немає даних про продажі за останні 6 місяців</p>';
     return;
   }
   
   const months = monthlyData.map(d => {
     const date = new Date(d.month + '-01');
-    return date.toLocaleDateString('ru-RU', { month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('uk-UA', { month: 'short', year: 'numeric' });
   });
   
   const revenues = monthlyData.map(d => parseFloat(d.revenue) || 0);
@@ -139,7 +139,7 @@ function buildSalesChart(monthlyData) {
     data: {
       labels: months,
       datasets: [{
-        label: 'Доход (₴)',
+        label: 'Дохід (₴)',
         data: revenues,
         borderColor: '#a874ff',
         backgroundColor: 'rgba(168, 116, 255, 0.1)',
@@ -178,7 +178,7 @@ function buildCategoriesChart(popularTypes) {
   // Проверяем наличие данных
   if (!popularTypes || popularTypes.length === 0) {
     console.log('⚠️ Нет данных для графика категорий');
-    ctx.parentElement.innerHTML = '<p style="color: #8181a0; text-align: center; padding: 40px;">Нет данных о популярных категориях</p>';
+    ctx.parentElement.innerHTML = '<p style="color: #8181a0; text-align: center; padding: 40px;">Немає даних про популярні категорії</p>';
     return;
   }
   
@@ -243,12 +243,12 @@ function renderUsers(users) {
   const container = document.getElementById('usersList');
   
   if (users.length === 0) {
-    container.innerHTML = '<p style="text-align: center; padding: 40px; color: #8181a0;">Пользователи не найдены</p>';
+    container.innerHTML = '<p style="text-align: center; padding: 40px; color: #8181a0;">Користувачів не знайдено</p>';
     return;
   }
   
   container.innerHTML = users.map(user => {
-    const joinDate = new Date(user.created_at).toLocaleDateString('ru-RU', {
+    const joinDate = new Date(user.created_at).toLocaleDateString('uk-UA', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -265,21 +265,21 @@ function renderUsers(users) {
             <p class="user-email">${user.email}</p>
           </div>
           <button class="delete-btn" onclick="confirmDeleteUser(${user.profile_id}, '${user.full_name}')">
-            🗑️ Удалить
+            🗑️ Видалити
           </button>
         </div>
         
         <div class="user-details">
           <div class="detail-item">
             <span class="detail-label">📱 Телефон:</span>
-            <span class="detail-value">${user.phone || 'Не указан'}</span>
+            <span class="detail-value">${user.phone || 'Не вказано'}</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">🔑 Логин:</span>
+            <span class="detail-label">🔑 Логін:</span>
             <span class="detail-value">${user.login}</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">📅 Регистрация:</span>
+            <span class="detail-label">📅 Реєстрація:</span>
             <span class="detail-value">${joinDate}</span>
           </div>
           <div class="detail-item">
@@ -287,11 +287,11 @@ function renderUsers(users) {
             <span class="detail-value">${user.purchases_count || 0}</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">📦 Аренд:</span>
+            <span class="detail-label">📦 Оренд:</span>
             <span class="detail-value">${user.rentals_count || 0}</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">💰 Потрачено:</span>
+            <span class="detail-label">💰 Витрачено:</span>
             <span class="detail-value highlight">${(user.total_spent || 0).toLocaleString()}₴</span>
           </div>
         </div>
@@ -344,15 +344,15 @@ document.getElementById('confirmDelete')?.addEventListener('click', async () => 
     
     if (data.success) {
       document.getElementById('deleteModal').style.display = 'none';
-      alert('✅ Пользователь успешно удален');
+      alert('✅ Користувача успішно видалено');
       loadUsers(); // Перезагружаем список
       loadStatistics(); // Обновляем статистику
     } else {
-      alert('❌ Ошибка: ' + data.message);
+      alert('❌ Помилка: ' + data.message);
     }
   } catch (err) {
     console.error('❌ Ошибка удаления:', err);
-    alert('Ошибка удаления пользователя');
+    alert('Помилка видалення користувача');
   }
 });
 
@@ -415,12 +415,12 @@ function initPhotoUpload() {
         
         if (result.success) {
           document.getElementById('adminPhoto').src = result.photo + '?t=' + Date.now();
-          alert('✅ Фото успешно обновлено');
+          alert('✅ Фото успішно оновлено');
         } else {
-          alert('❌ Ошибка: ' + result.message);
+          alert('❌ Помилка: ' + result.message);
         }
       } catch (err) {
-        alert('Ошибка загрузки фото');
+        alert('Помилка завантаження фото');
       }
     };
     fileInput.click();
@@ -495,13 +495,13 @@ function initProfileEdit() {
         editBtn.style.pointerEvents = "auto";
         saveBtn.style.opacity = "0.5";
         saveBtn.style.pointerEvents = "none";
-        alert('✅ Данные успешно сохранены!');
+        alert('✅ Дані успішно збережено!');
       } else {
         alert('❌ ' + result.message);
       }
     } catch (err) {
       console.error('Ошибка сохранения:', err);
-      alert('Ошибка при сохранении данных');
+      alert('Помилка при збереженні даних');
     }
   });
 }

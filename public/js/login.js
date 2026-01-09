@@ -25,12 +25,12 @@ form.addEventListener("submit", async (e) => {
     const result = await res.json();
 
     if (!res.ok) {
-      showError(result.message || "Ошибка входа");
+      showError(result.message || "Помилка входу");
       return;
     }
 
     if (!result.redirect) {
-      showError("Ошибка: сервер не вернул redirect");
+      showError("Помилка: сервер не повернув redirect");
       return;
     }
 
@@ -39,6 +39,6 @@ form.addEventListener("submit", async (e) => {
 
   } catch (err) {
     console.error(err);
-    showError("Ошибка соединения с сервером");
+    showError("Помилка з'єднання з сервером");
   }
 });

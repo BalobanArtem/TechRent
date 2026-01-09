@@ -84,7 +84,7 @@ async function loadPurchases() {
     }
   } catch (err) {
     console.error('❌ Ошибка загрузки покупок:', err);
-    document.getElementById('purchasesList').innerHTML = '<p style="color: #ff6b6b;">Ошибка загрузки данных</p>';
+    document.getElementById('purchasesList').innerHTML = '<p style="color: #ff6b6b;">Помилка завантаження даних</p>';
   }
 }
 
@@ -105,7 +105,7 @@ async function loadRentals() {
     }
   } catch (err) {
     console.error('❌ Ошибка загрузки аренд:', err);
-    document.getElementById('rentalsList').innerHTML = '<p style="color: #ff6b6b;">Ошибка загрузки данных</p>';
+    document.getElementById('rentalsList').innerHTML = '<p style="color: #ff6b6b;">Помилка завантаження даних</p>';
   }
 }
 
@@ -118,29 +118,18 @@ function renderPurchases(purchases) {
     return;
   }
   
-  if (purchases.length === 0) {
+  if (!purchases || purchases.length === 0) {
     container.innerHTML = `
-      <div style="text-align: center; padding: 40px; color: #8181a0;">
-        <p style="font-size: 18px;">🛍️ У вас пока нет совершенных покупок</p>
-        <a href="catalog.html" style="
-          display: inline-block;
-          margin-top: 20px;
-          padding: 12px 30px;
-          background: linear-gradient(135deg, #a874ff 0%, #8b5cf6 100%);
-          color: white;
-          text-decoration: none;
-          border-radius: 10px;
-          font-weight: 600;
-          transition: all 0.3s ease;
-        ">Перейти в каталог</a>
+      <div style="text-align: center; padding: 40px; color: #8181a0; width: 100%;">
+        <p style="font-size: 18px; margin-bottom: 20px;">🛍️ У вас поки немає здійснених покупок</p>
       </div>
     `;
     return;
-  }
+}
   
   container.innerHTML = purchases.map(item => {
     const imageUrl = item.image_url || 'https://via.placeholder.com/150x100/1a1a2e/a874ff?text=Фото';
-    const purchDate = new Date(item.purch_date).toLocaleDateString('ru-RU', {
+    const purchDate = new Date(item.purch_date).toLocaleDateString('uk-UA', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -192,18 +181,7 @@ function renderRentals(rentals) {
   if (rentals.length === 0) {
     container.innerHTML = `
       <div style="text-align: center; padding: 40px; color: #8181a0;">
-        <p style="font-size: 18px;">📦 У вас нет активных аренд</p>
-        <a href="catalog.html" style="
-          display: inline-block;
-          margin-top: 20px;
-          padding: 12px 30px;
-          background: linear-gradient(135deg, #a874ff 0%, #8b5cf6 100%);
-          color: white;
-          text-decoration: none;
-          border-radius: 10px;
-          font-weight: 600;
-          transition: all 0.3s ease;
-        ">Перейти в каталог</a>
+        <p style="font-size: 18px;">📦 У вас немає активних оренд</p>
       </div>
     `;
     return;
@@ -211,13 +189,13 @@ function renderRentals(rentals) {
   
   container.innerHTML = rentals.map(item => {
     const imageUrl = item.image_url || 'https://via.placeholder.com/150x100/1a1a2e/a874ff?text=Фото';
-    const startDate = new Date(item.rent_start).toLocaleDateString('ru-RU');
-    const endDate = new Date(item.rent_end).toLocaleDateString('ru-RU');
+    const startDate = new Date(item.rent_start).toLocaleDateString('uk-UA');
+    const endDate = new Date(item.rent_end).toLocaleDateString('uk-UA');
     
     const statusText = {
       'active': '✅ Активна',
       'completed': '✔️ Завершена',
-      'cancelled': '❌ Отменена'
+      'cancelled': '❌ Скасована'
     };
     
     const statusColor = {
@@ -250,7 +228,7 @@ function renderRentals(rentals) {
             ${item.brand_name} ${item.model_name}
           </h3>
           <p style="color: #a874ff; margin: 0 0 5px 0; font-size: 14px;">${item.type_name}</p>
-          <p style="color: #b3b3b3; margin: 0; font-size: 14px;">📅 С ${startDate} по ${endDate}</p>
+          <p style="color: #b3b3b3; margin: 0; font-size: 14px;">📅 З ${startDate} по ${endDate}</p>
           <p style="color: #ff9800; margin: 5px 0 0 0; font-size: 16px; font-weight: 600;">
             💰 ${item.total_price.toLocaleString()}₴
           </p>

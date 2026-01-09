@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 
 <head>
     <meta charset="UTF-8">
-    <title>Каталог оборудования</title>
+    <title>Каталог обладнання</title>
     <link rel="stylesheet" href="css/catalog.css">
     <link rel="stylesheet" href="css/navbar.css">
 </head>
@@ -13,53 +13,48 @@
     <header class="header">
         <div class="logo"><a href="home.html">TechRent</a></div>
         <nav class="nav">
-            <a href="home.html">Главная</a>
+            <a href="home.html">Головна</a>
             <a href="catalog.html" class="active">Каталог</a>
-            <a href="profile.html">Личный кабинет</a>
+            <a href="profile.html">Особистий кабінет</a>
         </nav>
     </header>
 
     <section class="filters">
         <div class="filter-block search-block">
-            <label>🔍 Поиск:</label>
-            <input type="text" id="searchInput" placeholder="Введите название..."
+            <label>🔍 Пошук:</label>
+            <input type="text" id="searchInput" placeholder="Введіть назву..."
                 style="padding: 12px 20px; background: rgba(29, 29, 43, 0.9); border: 1px solid rgba(168, 116, 255, 0.3); color: #e6e6e6; border-radius: 10px; outline: none; font-size: 15px; min-width: 250px; transition: all 0.3s;">
         </div>
+
         <div class="filter-block">
-            <label>Тип оборудования:</label>
+            <label>Тип обладнання:</label>
             <select id="typeFilter">
-                <option value="all">Все категории</option>
-                <option value="camera">Микроволновки</option>
+                <option value="all">Усі категорії</option>
+                <option value="camera">Мікрохвильові печі</option>
                 <option value="light">Холодильники</option>
-                <option value="microphone">Кофемашины</option>
-                <option value="other">Електропечи</option>
+                <option value="microphone">Кавомашини</option>
+                <option value="other">Електропечі</option>
             </select>
         </div>
 
         <div class="filter-block">
-            <label>Сортировка по цене:</label>
+            <label>Сортування за ціною:</label>
             <select id="priceSort">
-                <option value="none">Без сортировки</option>
-                <option value="asc">Сначала дешевые</option>
-                <option value="desc">Сначала дорогие</option>
+                <option value="none">Без сортування</option>
+                <option value="asc">Спочатку дешевші</option>
+                <option value="desc">Спочатку дорожчі</option>
             </select>
         </div>
 
         <div class="filter-block">
             <label for="brandFilter">Бренд:</label>
             <select id="brandFilter">
-                <!-- <option value="all">Все бренды</option>
-                <option value="bosch">Bosch</option>
-                <option value="samsung">Samsung</option>
-                <option value="lg">LG</option>
-                <option value="philips">Philips</option>
-                <option value="delonghi">De’Longhi</option> -->
             </select>
         </div>
 
         <div class="filter-block">
             <button id="resetFilters" class="reset-btn">
-                🔄 Сбросить фильтры
+                🔄 Скинути фільтри
             </button>
         </div>
     </section>
@@ -67,24 +62,23 @@
     <section class="catalog">
 
         <div class="card" data-type="camera" data-product="canon-r6">
-            <div class="card-img"><img src="img/camera.jpg" alt="camera1"></div>
+            <div class="card-img"><img src="" alt="camera1"></div>
             <div class="card-content">
                 <h3>Canon EOS R6</h3>
-                <p class="desc">Полноформатная камера для профессиональной съемки. Идеальна для фотографов и
-                    видеографов.</p>
+                <p class="desc">Повнокадрова камера для професійної зйомки. Ідеальна для фотографів і відеографів.</p>
                 <div class="price-block">
                     <div class="price-item">
-                        <span class="price-label">Аренда</span>
-                        <span class="price-value">200₴/сутки</span>
+                        <span class="price-label">Оренда</span>
+                        <span class="price-value">200₴/доба</span>
                     </div>
                     <div class="price-item">
-                        <span class="price-label">Покупка</span>
+                        <span class="price-label">Купівля</span>
                         <span class="price-value">85 000₴</span>
                     </div>
                 </div>
             </div>
             <button class="details-btn">
-                <span>Подробнее</span>
+                <span>Детальніше</span>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -93,23 +87,23 @@
         </div>
 
         <div class="card" data-type="camera" data-product="sony-a7-iv">
-            <div class="card-img"><img src="img/camera2.jpg" alt="camera2"></div>
+            <div class="card-img"><img src="" alt="camera2"></div>
             <div class="card-content">
                 <h3>Sony A7 IV</h3>
-                <p class="desc">Главный конкурент Canon, идеальна для видео. Отличная стабилизация и автофокус.</p>
+                <p class="desc">Головний конкурент Canon, ідеальна для відео. Відмінна стабілізація та автофокус.</p>
                 <div class="price-block">
                     <div class="price-item">
-                        <span class="price-label">Аренда</span>
-                        <span class="price-value">2 200₴/сутки</span>
+                        <span class="price-label">Оренда</span>
+                        <span class="price-value">2 200₴/доба</span>
                     </div>
                     <div class="price-item">
-                        <span class="price-label">Покупка</span>
+                        <span class="price-label">Купівля</span>
                         <span class="price-value">74 000₴</span>
                     </div>
                 </div>
             </div>
             <button class="details-btn">
-                <span>Подробнее</span>
+                <span>Детальніше</span>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -118,23 +112,23 @@
         </div>
 
         <div class="card" data-type="light" data-product="softbox-120">
-            <div class="card-img"><img src="img/light.jpg" alt="light"></div>
+            <div class="card-img"><img src="" alt="light"></div>
             <div class="card-content">
                 <h3>Softbox 120cm</h3>
-                <p class="desc">Мягкий равномерный свет для студийной съемки. Профессиональное качество освещения.</p>
+                <p class="desc">М’яке рівномірне світло для студійної зйомки. Професійна якість освітлення.</p>
                 <div class="price-block">
                     <div class="price-item">
-                        <span class="price-label">Аренда</span>
-                        <span class="price-value">900₴/сутки</span>
+                        <span class="price-label">Оренда</span>
+                        <span class="price-value">900₴/доба</span>
                     </div>
                     <div class="price-item">
-                        <span class="price-label">Покупка</span>
+                        <span class="price-label">Купівля</span>
                         <span class="price-value">5 000₴</span>
                     </div>
                 </div>
             </div>
             <button class="details-btn">
-                <span>Подробнее</span>
+                <span>Детальніше</span>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -143,75 +137,23 @@
         </div>
 
         <div class="card" data-type="microphone" data-product="rode-ntg2">
-            <div class="card-img"><img src="img/microphone.jpg" alt="microphone"></div>
+            <div class="card-img"><img src="" alt="microphone"></div>
             <div class="card-content">
                 <h3>Rode NTG-2</h3>
-                <p class="desc">Профессиональный направленный микрофон. Кристально чистый звук для видеопроизводства.
-                </p>
+                <p class="desc">Професійний спрямований мікрофон. Кришталево чистий звук для відеовиробництва.</p>
                 <div class="price-block">
                     <div class="price-item">
-                        <span class="price-label">Аренда</span>
-                        <span class="price-value">700₴/сутки</span>
+                        <span class="price-label">Оренда</span>
+                        <span class="price-value">700₴/доба</span>
                     </div>
                     <div class="price-item">
-                        <span class="price-label">Покупка</span>
+                        <span class="price-label">Купівля</span>
                         <span class="price-value">10 000₴</span>
                     </div>
                 </div>
             </div>
             <button class="details-btn">
-                <span>Подробнее</span>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="card" data-type="camera" data-product="nikon-z6-ii">
-            <div class="card-img"><img src="img/camera3.jpg" alt="camera3"></div>
-            <div class="card-content">
-                <h3>Nikon Z6 II</h3>
-                <p class="desc">Универсальная камера для фото и видео. Двойной процессор для максимальной
-                    производительности.</p>
-                <div class="price-block">
-                    <div class="price-item">
-                        <span class="price-label">Аренда</span>
-                        <span class="price-value">9 200₴/сутки</span>
-                    </div>
-                    <div class="price-item">
-                        <span class="price-label">Покупка</span>
-                        <span class="price-value">35 000₴</span>
-                    </div>
-                </div>
-            </div>
-            <button class="details-btn">
-                <span>Подробнее</span>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="card" data-type="light" data-product="led-panel-50w">
-            <div class="card-img"><img src="img/woman.jpg" alt="woman"></div>
-            <div class="card-content">
-                <h3>LED Panel 50W</h3>
-                <p class="desc">Компактная LED панель для видеосъемки. Регулируемая яркость и цветовая температура.</p>
-                <div class="price-block">
-                    <div class="price-item">
-                        <span class="price-label">Аренда</span>
-                        <span class="price-value">11 200₴/сутки</span>
-                    </div>
-                    <div class="price-item">
-                        <span class="price-label">Покупка</span>
-                        <span class="price-value">9 000₴</span>
-                    </div>
-                </div>
-            </div>
-            <button class="details-btn">
-                <span>Подробнее</span>
+                <span>Детальніше</span>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -221,86 +163,86 @@
 
     </section>
 
-    <!-- Модальное окно "Подробнее" -->
+    <!-- Модальне вікно "Детальніше" -->
     <div id="detailsModal" class="modal">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
             <div id="detailsContent">
-                <!-- Контент загружается динамически -->
+                <!-- Контент завантажується динамічно -->
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно "Спасибо за покупку" -->
+    <!-- Модальне вікно "Дякуємо за покупку" -->
     <div id="thankYouModal" class="modal">
         <div class="modal-content modal-small">
             <span class="modal-close">&times;</span>
             <div class="thank-you-content">
-                <h2>✅ Спасибо за покупку!</h2>
-                <p>С вами свяжется наш специалист для уточнения данных</p>
-                <button class="btn-primary" onclick="closeThankYou()">Закрыть</button>
+                <h2>✅ Дякуємо за покупку!</h2>
+                <p>З вами зв’яжеться наш спеціаліст для уточнення даних</p>
+                <button class="btn-primary" onclick="closeThankYou()">Закрити</button>
             </div>
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО АРЕНДЫ -->
+    <!-- МОДАЛЬНЕ ВІКНО ОРЕНДИ -->
     <div id="rentalModal" class="modal">
         <div class="modal-content modal-small">
             <span class="modal-close">&times;</span>
 
-            <h2>📅 Оформление аренды</h2>
+            <h2>📅 Оформлення оренди</h2>
 
             <div id="rentalInfo"></div>
 
             <div class="form-group">
-                <label>Дата начала аренды</label>
+                <label>Дата початку оренди</label>
                 <input type="date" id="rentStart">
             </div>
 
             <div class="form-group">
-                <label>Дата окончания аренды</label>
+                <label>Дата завершення оренди</label>
                 <input type="date" id="rentEnd">
             </div>
 
             <div class="rental-total" id="rentalTotal">
-                Итого: 0₴
+                Разом: 0₴
             </div>
 
             <div style="margin-top:20px;">
                 <button class="btn-primary" onclick="confirmRental()">
-                    Подтвердить аренду
+                    Підтвердити оренду
                 </button>
                 <button class="btn-secondary" onclick="closeModal('rentalModal')">
-                    Отмена
+                    Скасувати
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ПОКУПКИ -->
+    <!-- МОДАЛЬНЕ ВІКНО КУПІВЛІ -->
     <div id="purchaseModal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal('purchaseModal')">&times;</span>
 
-            <h2>🛒 Подтверждение покупки</h2>
+            <h2>🛒 Підтвердження покупки</h2>
 
-            <!-- ВОТ ОН, ОБЯЗАТЕЛЬНЫЙ БЛОК -->
             <div id="purchaseInfo"></div>
 
             <div style="margin-top:20px;">
                 <button class="btn-primary" onclick="confirmPurchase()">
-                    Подтвердить покупку
+                    Підтвердити покупку
                 </button>
                 <button class="btn-secondary" onclick="closeModal('purchaseModal')">
-                    Отмена
+                    Скасувати
                 </button>
             </div>
         </div>
     </div>
 
     <footer class="footer">
-        <p>© 2025 TechRent. Все права защищены.</p>
+        <p>© 2025 TechRent. Усі права захищені.</p>
     </footer>
+
     <script src="js/catalog.js"></script>
     <script src="js/details.js"></script>
 </body>

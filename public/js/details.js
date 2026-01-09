@@ -13,7 +13,7 @@ window.showEquipmentDetails = async function(equipmentId) {
     const data = await response.json();
     
     if (!data.success) {
-      alert('Ошибка загрузки данных');
+      alert('Помилка завантаження даних');
       return;
     }
     
@@ -23,7 +23,7 @@ window.showEquipmentDetails = async function(equipmentId) {
     
   } catch (err) {
     console.error('❌ Ошибка:', err);
-    alert('Ошибка загрузки данных');
+    alert('Помилка завантаження даних');
   }
 };
 
@@ -33,42 +33,42 @@ function renderDetails(equipment) {
   
   // Описания для товаров (пока статичные)
   const descriptions = {
-    'Пароконвектоматы': `Профессиональный пароконвектомат ${equipment.brand_name} ${equipment.model_name} - идеальное решение для современной кухни. 
-    Равномерное приготовление пищи с использованием пара и конвекции. Производство: ${equipment.brand_country}. 
-    Отличное состояние, год выпуска: ${new Date(equipment.date_new).getFullYear()}.`,
+    'Пароконвектоматы': `Професійний пароконвектомат ${equipment.brand_name} ${equipment.model_name} - ідеальне рішення для сучасної кухні. 
+    Рівномірне приготування їжі з використанням пари та конвекції. Виробництво: ${equipment.brand_country}. 
+    Відмінний стан, рік випуску: ${new Date(equipment.date_new).getFullYear()}.`,
     
-    'Холодильное оборудование': `Надежное холодильное оборудование ${equipment.brand_name} ${equipment.model_name}. 
-    Подходит для ресторанов, кафе и предприятий общественного питания. Производство: ${equipment.brand_country}. 
-    Энергоэффективное, с точным контролем температуры.`,
+    'Холодильное оборудование': `Надійне холодильне обладнання ${equipment.brand_name} ${equipment.model_name}. 
+    Підходить для ресторанів, кафе та підприємств громадського харчування. Виробництво: ${equipment.brand_country}. 
+    Енергоефективне, з точним контролем температури.`,
     
-    'Тепловое оборудование': `Мощное тепловое оборудование ${equipment.brand_name} ${equipment.model_name}. 
-    Профессиональное решение для приготовления большого объема блюд. Производство: ${equipment.brand_country}. 
-    Высокая производительность и надежность.`,
+    'Тепловое оборудование': `Потужне теплове обладнання ${equipment.brand_name} ${equipment.model_name}. 
+    Професійне рішення для приготування великого об'єму страв. Виробництво: ${equipment.brand_country}. 
+    Висока продуктивність та надійність.`,
     
-    'Тестомесильное оборудование': `Профессиональное тестомесильное оборудование ${equipment.brand_name} ${equipment.model_name}. 
-    Идеально для пекарен и кондитерских цехов. Производство: ${equipment.brand_country}. 
-    Равномерный замес, простота в эксплуатации.`,
+    'Тестомесильное оборудование': `Професійне тістомісильне обладнання ${equipment.brand_name} ${equipment.model_name}. 
+    Ідеально для пекарень та кондитерських цехів. Виробництво: ${equipment.brand_country}. 
+    Рівномірний заміс, простота в експлуатації.`,
     
-    'Фритюрницы': `Профессиональная фритюрница ${equipment.brand_name} ${equipment.model_name}. 
-    Быстрое приготовление, равномерная прожарка. Производство: ${equipment.brand_country}. 
-    Подходит для кафе, ресторанов быстрого питания.`,
+    'Фритюрницы': `Професійна фритюрниця ${equipment.brand_name} ${equipment.model_name}. 
+    Швидке приготування, рівномірне обсмажування. Виробництво: ${equipment.brand_country}. 
+    Підходить для кафе, ресторанів швидкого харчування.`,
     
-    'Планетарные миксеры': `Мощный планетарный миксер ${equipment.brand_name} ${equipment.model_name}. 
-    Профессиональное оборудование для кондитерских цехов. Производство: ${equipment.brand_country}. 
-    Несколько скоростей, надежная конструкция.`,
+    'Планетарные миксеры': `Потужний планетарний міксер ${equipment.brand_name} ${equipment.model_name}. 
+    Професійне обладнання для кондитерських цехів. Виробництво: ${equipment.brand_country}. 
+    Кілька швидкостей, надійна конструкція.`,
     
-    'Слайсеры и куттеры': `Профессиональный слайсер ${equipment.brand_name} ${equipment.model_name}. 
-    Точная нарезка продуктов, регулируемая толщина. Производство: ${equipment.brand_country}. 
-    Безопасность и высокая производительность.`,
+    'Слайсеры и куттеры': `Професійний слайсер ${equipment.brand_name} ${equipment.model_name}. 
+    Точна нарізка продуктів, регульована товщина. Виробництво: ${equipment.brand_country}. 
+    Безпека та висока продуктивність.`,
     
-    'Посудомоечные машины': `Промышленная посудомоечная машина ${equipment.brand_name} ${equipment.model_name}. 
-    Быстрая и качественная мойка посуды для HoReCa. Производство: ${equipment.brand_country}. 
-    Экономия воды и энергии, высокая производительность.`
+    'Посудомоечные машины': `Промислова посудомийна машина ${equipment.brand_name} ${equipment.model_name}. 
+    Швидке та якісне миття посуду для HoReCa. Виробництво: ${equipment.brand_country}. 
+    Економія води та енергії, висока продуктивність.`
   };
   
   const description = descriptions[equipment.type_name] || 
-    `Качественное оборудование ${equipment.brand_name} ${equipment.model_name} для профессионального использования. 
-    Производство: ${equipment.brand_country}. Надежность и высокое качество.`;
+    `Якісне обладнання ${equipment.brand_name} ${equipment.model_name} для професійного використання. 
+    Виробництво: ${equipment.brand_country}. Надійність та висока якість.`;
   
   const content = `
     <div class="details-container">
@@ -79,21 +79,21 @@ function renderDetails(equipment) {
         </div>
         <div class="details-info">
           <h2>${equipment.brand_name} ${equipment.model_name}</h2>
-          <p><strong>Категория:</strong> ${equipment.type_name}</p>
-          <p><strong>Производитель:</strong> ${equipment.brand_name} (${equipment.brand_country})</p>
+          <p><strong>Категорія:</strong> ${equipment.type_name}</p>
+          <p><strong>Виробник:</strong> ${equipment.brand_name} (${equipment.brand_country})</p>
           <p><strong>Статус:</strong> ${getStatusText(equipment.status)}</p>
           <p>${description}</p>
           
           <div class="details-price">
             ${equipment.for_sale === 'yes' ? `
               <div class="price-tag">
-                <div class="label">Цена покупки</div>
+                <div class="label">Ціна купівлі</div>
                 <div class="value">${equipment.price_sale.toLocaleString()}₴</div>
               </div>
             ` : ''}
             ${equipment.for_rent === 'yes' ? `
               <div class="price-tag">
-                <div class="label">Аренда / месяц</div>
+                <div class="label">Оренда / місяць</div>
                 <div class="value">${equipment.price_rent.toLocaleString()}₴</div>
               </div>
             ` : ''}
@@ -102,33 +102,33 @@ function renderDetails(equipment) {
           <div class="details-actions">
             ${equipment.for_sale === 'yes' && equipment.status !== 'sold' ? `
               <button class="btn-primary" onclick="showPurchaseConfirm()">
-                🛒 Купить за ${equipment.price_sale.toLocaleString()}₴
+                🛒 Купити за ${equipment.price_sale.toLocaleString()}₴
               </button>
             ` : ''}
             ${equipment.for_rent === 'yes' && equipment.status !== 'rented' ? `
               <button class="btn-secondary" onclick="toggleRentalForm()">
-                📅 Арендовать
+                📅 Орендувати
               </button>
             ` : ''}
           </div>
           
           <!-- Форма аренды -->
           <div id="rentalForm" class="rental-form">
-            <h3 style="color: #a874ff; margin-bottom: 20px;">📅 Расчет аренды</h3>
+            <h3 style="color: #a874ff; margin-bottom: 20px;">📅 Розрахунок оренди</h3>
             <div class="form-group">
-              <label>Дата начала аренды:</label>
+              <label>Дата початку оренди:</label>
               <input type="date" id="rentStart" onchange="calculateRental()" min="${new Date().toISOString().split('T')[0]}">
             </div>
             <div class="form-group">
-              <label>Дата окончания аренды:</label>
+              <label>Дата закінчення оренди:</label>
               <input type="date" id="rentEnd" onchange="calculateRental()">
             </div>
             <div class="rental-total">
-              <div class="label">Итого к оплате:</div>
+              <div class="label">Всього до сплати:</div>
               <div class="value" id="rentalTotal">0₴</div>
             </div>
             <button class="btn-primary" onclick="confirmRental()" style="width: 100%;">
-              ✅ Подтвердить аренду
+              ✅ Підтвердити оренду
             </button>
           </div>
         </div>
@@ -143,9 +143,9 @@ function renderDetails(equipment) {
 function getStatusText(status) {
   const statuses = {
     'available': '✅ Доступно',
-    'rented': '📅 В аренде',
+    'rented': '📅 В оренді',
     'sold': '🔒 Продано',
-    'maintenance': '🔧 На обслуживании'
+    'maintenance': '🔧 На обслуговуванні'
   };
   return statuses[status] || status;
 }
@@ -176,7 +176,7 @@ function calculateRental() {
   const end = new Date(endDate);
   
   if (end <= start) {
-    alert('Дата окончания должна быть позже даты начала');
+    alert('Дата закінчення повинна бути пізніше дати початку');
     document.getElementById('rentEnd').value = '';
     document.getElementById('rentalTotal').textContent = '0₴';
     return;
@@ -189,7 +189,7 @@ function calculateRental() {
   const pricePerMonth = currentEquipment.price_rent;
   const totalPrice = months * pricePerMonth;
   
-  document.getElementById('rentalTotal').textContent = `${totalPrice.toLocaleString()}₴ (${months} мес.)`;
+  document.getElementById('rentalTotal').textContent = `${totalPrice.toLocaleString()}₴ (${months} міс.)`;
 }
 
 // Подтверждение аренды
@@ -198,7 +198,7 @@ async function confirmRental() {
   const endDate = document.getElementById('rentEnd').value;
 
   if (!startDate || !endDate) {
-    alert('Пожалуйста, выберите даты аренды');
+    alert('Будь ласка, оберіть дати оренди');
     return;
   }
 
@@ -206,7 +206,7 @@ async function confirmRental() {
   const userRes = await fetch('/api/auth/current-user');
   const userData = await userRes.json();
   if (!userData.success) {
-    alert('Вы должны быть авторизованы для аренды');
+    alert('Ви повинні бути авторизовані для оренди');
     return;
   }
 
@@ -236,17 +236,17 @@ async function confirmRental() {
       closeModal('detailsModal');
       openModal('thankYouModal');
     } else {
-      alert(data.message || 'Ошибка оформления аренды');
+      alert(data.message || 'Помилка оформлення оренди');
     }
   } catch (err) {
     console.error('❌ Ошибка:', err);
-    alert('Ошибка соединения с сервером');
+    alert('Помилка з\'єднання з сервером');
   }
 }
 
 // Подтверждение покупки
 async function showPurchaseConfirm() {
-  if (!confirm(`Подтвердить покупку ${currentEquipment.brand_name} ${currentEquipment.model_name} за ${currentEquipment.price_sale.toLocaleString()}₴?`)) {
+  if (!confirm(`Підтвердити купівлю ${currentEquipment.brand_name} ${currentEquipment.model_name} за ${currentEquipment.price_sale.toLocaleString()}₴?`)) {
     return;
   }
   
@@ -255,7 +255,7 @@ async function showPurchaseConfirm() {
     const userRes = await fetch('/api/auth/current-user');
     const userData = await userRes.json();
     if (!userData.success) {
-      alert('Вы должны быть авторизованы для покупки');
+      alert('Ви повинні бути авторизовані для покупки');
       return;
     }
 
@@ -277,11 +277,11 @@ async function showPurchaseConfirm() {
       closeModal('detailsModal');
       openModal('thankYouModal');
     } else {
-      alert(data.message || 'Ошибка оформления покупки');
+      alert(data.message || 'Помилка оформлення покупки');
     }
   } catch (err) {
     console.error('❌ Ошибка:', err);
-    alert('Ошибка соединения с сервером');
+    alert('Помилка з\'єднання з сервером');
   }
 }
 
