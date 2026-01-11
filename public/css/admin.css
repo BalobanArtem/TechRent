@@ -1,5 +1,5 @@
 /* ============================================================
-   ADMIN.CSS - Полные стили админ-панели
+   ADMIN.CSS - Полные стили админ-панели с уменьшенными графиками
    ============================================================ */
 
 * {
@@ -166,7 +166,7 @@ body {
 }
 
 /* ============================================================
-   ГРАФИКИ
+   ГРАФИКИ - УМЕНЬШЕННЫЕ
    ============================================================ */
 .charts-grid {
   display: grid;
@@ -179,17 +179,30 @@ body {
   background: rgba(29, 29, 43, 0.6);
   border: 2px solid rgba(168, 116, 255, 0.2);
   border-radius: 15px;
-  padding: 25px;
+  padding: 20px;
+  height: 320px; /* Уменьшена высота с 400px */
 }
 
 .chart-card h3 {
   color: #a874ff;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-size: 18px;
 }
 
 .chart-card canvas {
-  max-height: 300px;
+  max-height: 250px !important; /* Уменьшена высота canvas */
+  width: 100% !important;
+}
+
+/* Стили для легенды Chart.js */
+.chart-card .chartjs-legend,
+.chart-card .chartjs-legend-item,
+.chart-card .chartjs-legend-item-text {
+  color: #ffffff !important;
+}
+
+canvas {
+  color: #ffffff !important;
 }
 
 /* ============================================================
@@ -620,6 +633,14 @@ body {
   
   .charts-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .chart-card {
+    height: 280px;
+  }
+  
+  .chart-card canvas {
+    max-height: 200px !important;
   }
   
   .profile-card {

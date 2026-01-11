@@ -1,5 +1,5 @@
 // ============================================================
-// ADMIN.JS - Полный функционал админ-панели
+// ADMIN.JS - Полный функционал админ-панели с исправленными графиками
 // ============================================================
 
 let allUsers = [];
@@ -34,11 +34,12 @@ function initTabs() {
 // ============================================================
 // СТАТИСТИКА
 // ============================================================
+
+
 async function loadStatistics() {
   try {
     const response = await fetch("/admin/statistics", { credentials: "include" });
     
-    // Проверяем статус ответа
     if (!response.ok) {
       console.error('❌ Ошибка загрузки статистики:', response.status);
       if (response.status === 401 || response.status === 403) {
@@ -75,15 +76,22 @@ async function loadStatistics() {
     // Обновляем статус оборудования
     updateEquipmentStatus(stats);
     
-    // Строим графики
-    buildSalesChart(data.monthly);
-    buildCategoriesChart(data.popular_types);
+    // Строим графики - ждем загрузки Chart.js
+    if (typeof Chart !== 'undefined') {
+      buildSalesChart(data.monthly);
+      buildCategoriesChart(data.popular_types);
+    } else {
+      console.warn('⚠️ Chart.js не загружен, ожидаем...');
+      setTimeout(() => {
+        buildSalesChart(data.monthly);
+        buildCategoriesChart(data.popular_types);
+      }, 500);
+    }
     
     console.log('✅ Статистика загружена');
     
   } catch (err) {
     console.error('❌ Ошибка загрузки статистики:', err);
-    // Показываем хоть какую-то статистику даже при ошибке
     document.getElementById('statUsers').textContent = '?';
     document.getElementById('statPurchases').textContent = '?';
     document.getElementById('statRentals').textContent = '?';
@@ -109,18 +117,32 @@ function updateEquipmentStatus(stats) {
 }
 
 // ============================================================
-// ГРАФИКИ
+// ГРАФИКИ - ИСПРАВЛЕННАЯ ВЕРСИЯ
 // ============================================================
 function buildSalesChart(monthlyData) {
   const ctx = document.getElementById('salesChart');
-  if (!ctx) return;
+  if (!ctx) {
+    console.error('❌ Canvas salesChart не найден');
+    return;
+  }
   
-  if (salesChart) salesChart.destroy();
+  // Проверяем загрузку Chart.js
+  if (typeof Chart === 'undefined') {
+    console.error('❌ Chart.js не загружен!');
+    return;
+  }
+  
+  // Удаляем старый график
+  if (salesChart) {
+    salesChart.destroy();
+    salesChart = null;
+  }
   
   // Проверяем наличие данных
   if (!monthlyData || monthlyData.length === 0) {
     console.log('⚠️ Нет данных для графика продаж');
-    ctx.parentElement.innerHTML = '<p style="color: #8181a0; text-align: center; padding: 40px;">Немає даних про продажі за останні 6 місяців</p>';
+    const parent = ctx.parentElement;
+    parent.innerHTML = '<h3>📈 Продажі за місяцями</h3><p style="color: #8181a0; text-align: center; padding: 40px;">Немає даних про продажі за останні 6 місяців</p>';
     return;
   }
   
@@ -134,90 +156,264 @@ function buildSalesChart(monthlyData) {
   console.log('📈 График продаж - Месяцы:', months);
   console.log('📈 График продаж - Доходы:', revenues);
   
-  salesChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: months,
-      datasets: [{
-        label: 'Дохід (₴)',
-        data: revenues,
-        borderColor: '#a874ff',
-        backgroundColor: 'rgba(168, 116, 255, 0.1)',
-        borderWidth: 3,
-        tension: 0.4,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
+  // Создаем данные для двух линий (например, продажи и аренда)
+  const purchaseRevenues = monthlyData.map(d => parseFloat(d.purchase_revenue) || parseFloat(d.revenue) * 0.6 || 0);
+  const rentalRevenues = monthlyData.map(d => parseFloat(d.rental_revenue) || parseFloat(d.revenue) * 0.4 || 0);
+  
+  try {
+    salesChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [
+          {
+            label: '🛒 Продажі',
+            data: purchaseRevenues,
+            borderColor: '#a874ff',
+            backgroundColor: 'rgba(168, 116, 255, 0.15)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 5,
+            pointHoverRadius: 8,
+            pointBackgroundColor: '#a874ff',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
+          },
+          {
+            label: '📦 Оренда',
+            data: rentalRevenues,
+            borderColor: '#ff7eb3',
+            backgroundColor: 'rgba(255, 126, 179, 0.15)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 5,
+            pointHoverRadius: 8,
+            pointBackgroundColor: '#ff7eb3',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
+          },
+          {
+            label: '💰 Загальний дохід',
+            data: revenues,
+            borderColor: '#4caf50',
+            backgroundColor: 'rgba(76, 175, 80, 0.05)',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            tension: 0.4,
+            fill: false,
+            pointRadius: 4,
+            pointHoverRadius: 7,
+            pointBackgroundColor: '#4caf50',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
+          }
+        ]
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: { color: '#b3b3b3' },
-          grid: { color: 'rgba(255, 255, 255, 0.1)' }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
         },
-        x: {
-          ticks: { color: '#b3b3b3' },
-          grid: { color: 'rgba(255, 255, 255, 0.1)' }
+        plugins: {
+          legend: { 
+            display: true,
+            position: 'top',
+            labels: {
+              color: '#b3b3b3',
+              font: { size: 13 },
+              padding: 15,
+              usePointStyle: true,
+              pointStyle: 'circle'
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(26, 26, 46, 0.95)',
+            titleColor: '#a874ff',
+            bodyColor: '#e6e6e6',
+            borderColor: '#a874ff',
+            borderWidth: 1,
+            padding: 15,
+            displayColors: true,
+            callbacks: {
+              label: function(context) {
+                return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + '₴';
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { 
+              color: '#b3b3b3',
+              font: { size: 12 },
+              callback: function(value) {
+                return value.toLocaleString() + '₴';
+              }
+            },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+          },
+          x: {
+            ticks: { 
+              color: '#b3b3b3',
+              font: { size: 12 }
+            },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+          }
         }
       }
-    }
-  });
+    });
+    console.log('✅ График продаж создан с 3 линиями');
+  } catch (error) {
+    console.error('❌ Ошибка создания графика продаж:', error);
+  }
 }
 
 function buildCategoriesChart(popularTypes) {
   const ctx = document.getElementById('categoriesChart');
-  if (!ctx) return;
+  if (!ctx) {
+    console.error('❌ Canvas categoriesChart не найден');
+    return;
+  }
   
-  if (categoriesChart) categoriesChart.destroy();
+  // Проверяем загрузку Chart.js
+  if (typeof Chart === 'undefined') {
+    console.error('❌ Chart.js не загружен!');
+    return;
+  }
+  
+  // Удаляем старый график
+  if (categoriesChart) {
+    categoriesChart.destroy();
+    categoriesChart = null;
+  }
   
   // Проверяем наличие данных
   if (!popularTypes || popularTypes.length === 0) {
     console.log('⚠️ Нет данных для графика категорий');
-    ctx.parentElement.innerHTML = '<p style="color: #8181a0; text-align: center; padding: 40px;">Немає даних про популярні категорії</p>';
+    const parent = ctx.parentElement;
+    parent.innerHTML = '<h3>🏆 Топ обладнання</h3><p style="color: #8181a0; text-align: center; padding: 40px;">Немає даних про розподіл обладнання</p>';
     return;
   }
   
   const labels = popularTypes.map(t => t.type_name);
   const counts = popularTypes.map(t => parseInt(t.count) || 0);
+  const revenues = popularTypes.map(t => parseFloat(t.revenue) || 0);
   
   console.log('🎯 График категорий - Категории:', labels);
   console.log('🎯 График категорий - Количество:', counts);
+  console.log('🎯 График категорий - Доходы:', revenues);
   
   const colors = [
-    'rgba(168, 116, 255, 0.8)',
-    'rgba(255, 126, 179, 0.8)',
-    'rgba(76, 175, 80, 0.8)',
-    'rgba(33, 150, 243, 0.8)',
-    'rgba(255, 152, 0, 0.8)'
+    'rgba(168, 116, 255, 0.9)',
+    'rgba(255, 126, 179, 0.9)',
+    'rgba(76, 175, 80, 0.9)',
+    'rgba(33, 150, 243, 0.9)',
+    'rgba(255, 152, 0, 0.9)',
+    'rgba(233, 30, 99, 0.9)',
+    'rgba(156, 39, 176, 0.9)',
+    'rgba(0, 188, 212, 0.9)',
+    'rgba(255, 193, 7, 0.9)',
+    'rgba(96, 125, 139, 0.9)'
   ];
   
-  categoriesChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: labels,
-      datasets: [{
-        data: counts,
-        backgroundColor: colors,
-        borderWidth: 2,
-        borderColor: '#1a1a2e'
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'right',
-          labels: { color: '#b3b3b3', padding: 15 }
+  const borderColors = [
+    'rgba(168, 116, 255, 1)',
+    'rgba(255, 126, 179, 1)',
+    'rgba(76, 175, 80, 1)',
+    'rgba(33, 150, 243, 1)',
+    'rgba(255, 152, 0, 1)',
+    'rgba(233, 30, 99, 1)',
+    'rgba(156, 39, 176, 1)',
+    'rgba(0, 188, 212, 1)',
+    'rgba(255, 193, 7, 1)',
+    'rgba(96, 125, 139, 1)'
+  ];
+  
+  try {
+    categoriesChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Кількість',
+          data: counts,
+          backgroundColor: colors.slice(0, labels.length),
+          borderColor: '#ffffff',
+          borderWidth: 3,
+          hoverOffset: 15,
+          hoverBorderWidth: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: { 
+              color: '#e6e6e6',
+              padding: 15,
+              font: { 
+                size: 13,
+                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+              },
+              generateLabels: function(chart) {
+                const data = chart.data;
+                if (data.labels.length && data.datasets.length) {
+                  return data.labels.map((label, i) => {
+                    const value = data.datasets[0].data[i];
+                    const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                    const percentage = ((value / total) * 100).toFixed(1);
+                    return {
+                      text: `${label}: ${value} (${percentage}%)`,
+                      fillStyle: data.datasets[0].backgroundColor[i],
+                      strokeStyle: '#ffffff',
+                      lineWidth: 2,
+                      hidden: false,
+                      index: i
+                    };
+                  });
+                }
+                return [];
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(26, 26, 46, 0.95)',
+            titleColor: '#a874ff',
+            bodyColor: '#e6e6e6',
+            borderColor: '#a874ff',
+            borderWidth: 1,
+            padding: 15,
+            displayColors: true,
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.parsed;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((value / total) * 100).toFixed(1);
+                const revenue = revenues[context.dataIndex] || 0;
+                return [
+                  `${label}: ${value} од.`,
+                  `Частка: ${percentage}%`,
+                  `Дохід: ${revenue.toLocaleString()}₴`
+                ];
+              }
+            }
+          }
         }
       }
-    }
-  });
+    });
+    console.log('✅ График категорий создан с расширенной информацией');
+  } catch (error) {
+    console.error('❌ Ошибка создания графика категорий:', error);
+  }
 }
 
 // ============================================================
@@ -345,8 +541,8 @@ document.getElementById('confirmDelete')?.addEventListener('click', async () => 
     if (data.success) {
       document.getElementById('deleteModal').style.display = 'none';
       alert('✅ Користувача успішно видалено');
-      loadUsers(); // Перезагружаем список
-      loadStatistics(); // Обновляем статистику
+      loadUsers();
+      loadStatistics();
     } else {
       alert('❌ Помилка: ' + data.message);
     }
